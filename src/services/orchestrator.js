@@ -144,10 +144,19 @@ export async function processInboundLead(inputPayload) {
   const lowerTrans = (transcriptOrMessage || '').toLowerCase();
   const explicitlyAskedForHuman = ['talk to a person', 'human', 'real person', 'operator', 'representative', 'transfer me', 'supervisor', 'someone who works there'].some(kw => lowerTrans.includes(kw));
 
+  // Territory / Service Area Quality Gate (Springfield & 25-mile local operational radius)
+  const locLower = (extracted.location || '').toLowerCase();
+  const isOutOfArea = locLower.includes('pakistan') || locLower.includes('islamabad') || locLower.includes('lahore') || locLower.includes('karachi') || locLower.includes('dublin') || locLower.includes('london') || locLower.includes('india') || locLower.includes('delhi');
+
   // If the caller provided all 4 fields (Name, Address, Phone, Job) and never asked for a human, ensure needs_human is false
   if (missingInfo.length === 0 && !explicitlyAskedForHuman && !lowerTrans.includes('garbled') && !lowerTrans.includes('[inaudible]')) {
-    extracted.needs_human = false;
-    extracted.reason_if_needs_human = null;
+    if (isOutOfArea) {
+      extracted.needs_human = true;
+      extracted.reason_if_needs_human = 'Out of Service Territory — Customer location is outside Springfield 25-mile radius. Requires dispatcher territory review.';
+    } else {
+      extracted.needs_human = false;
+      extracted.reason_if_needs_human = null;
+    }
   } else if (missingInfo.length > 0 && !extracted.needs_human) {
     extracted.needs_human = true;
     extracted.reason_if_needs_human = `Incomplete call details (Missing: ${missingInfo.join(', ')}). Must contact customer again.`;

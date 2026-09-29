@@ -703,6 +703,25 @@ async function handleAdminStatusChange(leadId, newStatus) {
 
 async function handleAdminAssignTech(leadId, techName) {
   try {
+    if (techName) {
+      const currentLead = leadsCache.find(l => (l.leadId === leadId || l.id === leadId));
+      if (currentLead && currentLead.bookedSlot) {
+        const conflict = leadsCache.find(other => 
+          (other.leadId !== leadId && other.id !== currentLead.id) &&
+          other.status !== 'Closed' &&
+          (other.assignedTech || '').trim().toLowerCase() === techName.trim().toLowerCase() &&
+          (other.bookedSlot || '').trim() === (currentLead.bookedSlot || '').trim()
+        );
+        if (conflict) {
+          const proceed = confirm(`⚠️ Warning: ${techName} is already booked for an active appointment at ${currentLead.bookedSlot} (${conflict.leadId || conflict.name} at ${conflict.location || 'Springfield'}).\n\nDo you want to double-book this technician anyway?`);
+          if (!proceed) {
+            renderLeadsTable();
+            return;
+          }
+        }
+      }
+    }
+
     const res = await authFetch(`/api/leads/${leadId}/assign`, {
       method: 'POST',
       body: JSON.stringify({ techName }),

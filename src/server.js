@@ -493,6 +493,10 @@ app.post('/api/public/book', async (req, res) => {
     const randomNum = Math.floor(1000 + Math.random() * 9000);
     const leadId = `LD-${randomNum}-${tradeSuffix}`;
 
+    // Check territory boundary
+    const locLower = (location || '').toLowerCase();
+    const isOutOfArea = locLower.includes('pakistan') || locLower.includes('islamabad') || locLower.includes('lahore') || locLower.includes('karachi') || locLower.includes('dublin') || locLower.includes('london') || locLower.includes('india') || locLower.includes('delhi');
+
     const leadData = {
       leadId: leadId,
       lead_id: leadId,
@@ -506,10 +510,12 @@ app.post('/api/public/book', async (req, res) => {
       location: location.trim(),
       job_type: job_type.trim(),
       urgency: isEmergency ? 'Emergency' : (urgency || 'Medium'),
-      status: 'Booked',
+      status: isOutOfArea ? 'Escalated to Human' : 'Booked',
       booked_slot: finalSlot,
       description: description.trim() || `Instant booking for ${job_type}`,
-      next_action: isEmergency ? 'Emergency technician en route' : 'Technician scheduled for arrival window',
+      next_action: isOutOfArea 
+        ? '⚠️ Out of Service Area — Contact customer for remote review or service territory referral'
+        : (isEmergency ? 'Emergency technician en route' : 'Technician scheduled for arrival window'),
       source: 'Public Web Fast Booking',
     };
 
