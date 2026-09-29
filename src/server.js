@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import config from '../config/index.js';
 import airtableService from './services/airtable.js';
@@ -14,15 +15,18 @@ import customCrmDb from './services/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const publicDir = fs.existsSync(path.join(__dirname, 'public'))
+  ? path.join(__dirname, 'public')
+  : path.resolve(process.cwd(), 'src', 'public');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public'), { index: false }));
+app.use(express.static(publicDir, { index: false }));
 
 app.get('/favicon.ico', (req, res) => {
-  res.type('image/svg+xml').sendFile(path.join(__dirname, 'public', 'favicon.svg'));
+  res.type('image/svg+xml').sendFile(path.join(publicDir, 'favicon.svg'));
 });
 
 // Clean URL routing: root redirects directly to /home
@@ -32,11 +36,11 @@ app.get('/', (req, res) => {
 
 // Clean pages & role portals
 app.get(['/home', '/admin', '/staff', '/customer', '/portal', '/landing', '/book', '/tracking', '/services'], (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(publicDir, 'index.html'));
 });
 
 app.get(['/tech', '/van'], (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'tech.html'));
+  res.sendFile(path.join(publicDir, 'tech.html'));
 });
 
 /**
@@ -1373,7 +1377,7 @@ app.post('/api/reset', async (req, res) => {
 
 // Fallback to index.html for SPA
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(publicDir, 'index.html'));
 });
 
 // Start Server if not running in a serverless environment (e.g. Vercel)
