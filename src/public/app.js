@@ -501,12 +501,63 @@ async function refreshAllData(silent = false) {
 /* ==============================================================================
    LEADS & WORK ORDERS (ADMIN VIEW)
    ============================================================================== */
+function getClientSavedLeads() {
+  try {
+    const raw = localStorage.getItem('apex_client_created_leads');
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveLeadToClientStorage(lead) {
+  if (!lead) return;
+  try {
+    const leads = getClientSavedLeads();
+    const id = lead.leadId || lead.lead_id || lead.LeadID || lead.id;
+    if (!id) return;
+    const cleanId = String(id).toUpperCase();
+    const existingIdx = leads.findIndex(l => {
+      const lid = l.leadId || l.lead_id || l.LeadID || l.id;
+      return lid && String(lid).toUpperCase() === cleanId;
+    });
+    if (existingIdx >= 0) {
+      leads[existingIdx] = { ...leads[existingIdx], ...lead };
+    } else {
+      leads.unshift(lead);
+    }
+    localStorage.setItem('apex_client_created_leads', JSON.stringify(leads.slice(0, 50)));
+
+    // Background sync to active serverless instance
+    authFetch('/api/leads/sync', {
+      method: 'POST',
+      body: JSON.stringify({ leads: [lead] }),
+    }).catch(() => {});
+  } catch (e) {}
+}
+
 async function fetchLeads(silent = false) {
   try {
     const res = await authFetch('/api/leads');
     if (res.ok) {
       const data = await res.json();
-      leadsCache = data.leads || [];
+      const serverLeads = data.leads || [];
+      const clientLeads = getClientSavedLeads();
+
+      // Merge client saved leads with server leads (ensuring Vercel serverless persistence)
+      const mergedMap = new Map();
+      for (const cl of clientLeads) {
+        const id = cl.leadId || cl.lead_id || cl.LeadID || cl.id;
+        if (id) mergedMap.set(String(id).toUpperCase(), cl);
+      }
+      for (const sl of serverLeads) {
+        const id = sl.leadId || sl.lead_id || sl.LeadID || sl.id;
+        if (id && !mergedMap.has(String(id).toUpperCase())) {
+          mergedMap.set(String(id).toUpperCase(), sl);
+        }
+      }
+
+      leadsCache = Array.from(mergedMap.values());
       renderLeadsTable();
       updateKpis(leadsCache);
 
@@ -517,6 +568,14 @@ async function fetchLeads(silent = false) {
       if (attentionBadge) {
         const count = leadsCache.filter(l => l.status === 'Escalated to Human' || l.status === 'Escalated' || l.urgency === 'Emergency').length;
         attentionBadge.textContent = count;
+      }
+
+      // Sync any unsynced local leads to server in background
+      if (clientLeads.length > 0) {
+        authFetch('/api/leads/sync', {
+          method: 'POST',
+          body: JSON.stringify({ leads: clientLeads }),
+        }).catch(() => {});
       }
     }
   } catch (err) {
@@ -2523,6 +2582,10 @@ window.submitPublicFastBooking = async function() {
       throw new Error(data.error || 'Booking could not be processed');
     }
 
+    if (data.lead) {
+      saveLeadToClientStorage(data.lead);
+    }
+
     openBookingSuccessModal(data);
     document.getElementById('publicFastBookingForm')?.reset();
     showToast('Service Booked!', `Technician assigned for ${data.trackingId}`, 'success');
@@ -2701,6 +2764,9 @@ async function processInboundCall(transcript) {
 
     if (res.ok) {
       const data = await res.json();
+      if (data.lead) {
+        saveLeadToClientStorage(data.lead);
+      }
       showToast('Intake Completed', `Status: ${data.lead?.Status || 'Processed'}. Logged to CRM.`, 'success');
       await refreshAllData();
     }
@@ -2828,6 +2894,12 @@ async function endLiveVoiceCall() {
         }),
       });
       if (res.ok) {
+        const data = await res.json();
+        const createdLead = data?.leadResult?.lead;
+        if (createdLead) {
+          saveLeadToClientStorage(createdLead);
+          showToast('Call Intake Recorded', `Voice AI created lead ${createdLead.leadId || createdLead.LeadID || ''}`, 'success');
+        }
         await refreshAllData();
       }
     } catch (e) {
@@ -2875,11 +2947,18 @@ async function handleUserSpeech(text) {
       liveCallHistory.push({ role: 'user', content: text });
       liveCallHistory.push({ role: 'assistant', content: replyText });
 
+      if (data.leadResult && data.leadResult.lead) {
+        saveLeadToClientStorage(data.leadResult.lead);
+      }
+
       let badgeInfo = '';
       if (data.toolExecuted) {
         badgeInfo = ` <span class="badge badge-accent" style="font-size: 0.65rem; margin-left: 6px;">⚡ ${escapeHtml(data.toolExecuted)}</span>`;
         if (data.toolExecuted === 'book_appointment') {
           isCallBooked = true;
+          if (data.leadResult && data.leadResult.lead) {
+            saveLeadToClientStorage(data.leadResult.lead);
+          }
           refreshAllData();
         }
       }

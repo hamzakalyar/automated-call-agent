@@ -679,12 +679,49 @@ app.get('/api/public/track', (req, res) => {
 app.get('/api/leads', async (req, res) => {
   try {
     const user = resolveUser(req);
+
+    // If live Airtable is connected, sync any cloud leads into CRM
+    if (airtableService.isLive) {
+      try {
+        const cloudLeads = await airtableService.listLeads(100);
+        if (Array.isArray(cloudLeads)) {
+          for (const cl of cloudLeads) {
+            customCrmDb.createLead(cl);
+          }
+        }
+      } catch (e) {
+        console.warn('[Airtable Sync Notice]', e.message);
+      }
+    }
+
     const leads = customCrmDb.listLeadsScoped({ user, limit: 100 });
     res.json({
       leads,
       user: { id: user.id, name: user.name, role: user.role },
-      layer: 'Custom SQLite Native Relational CRM',
+      layer: airtableService.isLive ? 'Live Airtable Cloud CRM' : 'Custom SQLite Native Relational CRM',
     });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * Bulk Sync Client-Created Leads
+ * Allows client browser sessions on Vercel to sync newly created leads to the active serverless container
+ */
+app.post('/api/leads/sync', (req, res) => {
+  try {
+    const { leads = [] } = req.body;
+    let synced = 0;
+    if (Array.isArray(leads)) {
+      for (const item of leads) {
+        if (item && (item.leadId || item.lead_id || item.LeadID)) {
+          customCrmDb.createLead(item);
+          synced++;
+        }
+      }
+    }
+    res.json({ success: true, synced });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

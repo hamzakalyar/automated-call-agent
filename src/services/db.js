@@ -969,7 +969,7 @@ class CustomCrmDatabase {
     }
 
     const stmt = this.db.prepare(`
-      INSERT INTO leads (
+      INSERT OR REPLACE INTO leads (
         lead_id, customer_id, assigned_staff_id, assigned_tech, name, phone, email,
         location, job_type, urgency, status, booked_slot, description, photo_links,
         next_action, source, recording_url, technician_notes, customer_notes,
