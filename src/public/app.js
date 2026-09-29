@@ -501,10 +501,65 @@ async function refreshAllData(silent = false) {
 /* ==============================================================================
    LEADS & WORK ORDERS (ADMIN VIEW)
    ============================================================================== */
+function normalizeLead(l) {
+  if (!l || typeof l !== 'object') return l;
+  const leadId = l.leadId || l.lead_id || l.LeadID || l.id || 'LD-NEW';
+  const name = l.name || l.Name || 'Unknown Customer';
+  const phone = l.phone || l.Phone || '';
+  const email = l.email || l.Email || '';
+  const location = l.location || l.Location || 'Springfield';
+  const jobType = l.jobType || l.JobType || l.job_type || 'General Service';
+  const urgency = l.urgency || l.Urgency || 'Medium';
+  const status = l.status || l.Status || 'New Lead';
+  const bookedSlot = l.bookedSlot || l.BookedSlot || l.booked_slot || '';
+  const assignedTech = l.assignedTech || l.AssignedTech || l.assigned_tech || '';
+  const notes = l.customerNotes || l.customer_notes || l.CustomerNotes || l.notes || l.Notes || '';
+  const nextAction = l.nextAction || l.NextAction || l.next_action || '';
+  const source = l.source || l.Source || 'ai_voice';
+
+  return {
+    ...l,
+    id: l.id || leadId,
+    leadId,
+    LeadID: leadId,
+    lead_id: leadId,
+    name,
+    Name: name,
+    phone,
+    Phone: phone,
+    email,
+    Email: email,
+    location,
+    Location: location,
+    jobType,
+    JobType: jobType,
+    job_type: jobType,
+    urgency,
+    Urgency: urgency,
+    status,
+    Status: status,
+    bookedSlot,
+    BookedSlot: bookedSlot,
+    booked_slot: bookedSlot,
+    assignedTech,
+    AssignedTech: assignedTech,
+    assigned_tech: assignedTech,
+    customerNotes: notes,
+    CustomerNotes: notes,
+    customer_notes: notes,
+    nextAction,
+    NextAction: nextAction,
+    next_action: nextAction,
+    source,
+    Source: source,
+  };
+}
+
 function getClientSavedLeads() {
   try {
     const raw = localStorage.getItem('apex_client_created_leads');
-    return raw ? JSON.parse(raw) : [];
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed.map(normalizeLead) : [];
   } catch (e) {
     return [];
   }
@@ -513,8 +568,9 @@ function getClientSavedLeads() {
 function saveLeadToClientStorage(lead) {
   if (!lead) return;
   try {
+    const normalized = normalizeLead(lead);
     const leads = getClientSavedLeads();
-    const id = lead.leadId || lead.lead_id || lead.LeadID || lead.id;
+    const id = normalized.leadId;
     if (!id) return;
     const cleanId = String(id).toUpperCase();
     const existingIdx = leads.findIndex(l => {
@@ -522,16 +578,29 @@ function saveLeadToClientStorage(lead) {
       return lid && String(lid).toUpperCase() === cleanId;
     });
     if (existingIdx >= 0) {
-      leads[existingIdx] = { ...leads[existingIdx], ...lead };
+      leads[existingIdx] = { ...leads[existingIdx], ...normalized };
     } else {
-      leads.unshift(lead);
+      leads.unshift(normalized);
     }
     localStorage.setItem('apex_client_created_leads', JSON.stringify(leads.slice(0, 50)));
+
+    // Immediately keep active in-memory leadsCache updated with normalized lead
+    const cacheIdx = leadsCache.findIndex(l => {
+      const lid = l.leadId || l.lead_id || l.LeadID || l.id;
+      return lid && String(lid).toUpperCase() === cleanId;
+    });
+    if (cacheIdx >= 0) {
+      leadsCache[cacheIdx] = { ...leadsCache[cacheIdx], ...normalized };
+    } else {
+      leadsCache.unshift(normalized);
+    }
+    renderLeadsTable();
+    updateKpis(leadsCache);
 
     // Background sync to active serverless instance
     authFetch('/api/leads/sync', {
       method: 'POST',
-      body: JSON.stringify({ leads: [lead] }),
+      body: JSON.stringify({ leads: [normalized] }),
     }).catch(() => {});
   } catch (e) {}
 }
@@ -541,19 +610,35 @@ async function fetchLeads(silent = false) {
     const res = await authFetch('/api/leads');
     if (res.ok) {
       const data = await res.json();
-      const serverLeads = data.leads || [];
+      const serverLeads = (data.leads || []).map(normalizeLead);
       const clientLeads = getClientSavedLeads();
 
-      // Merge client saved leads with server leads (ensuring Vercel serverless persistence)
+      // Merge: preserve in-memory leadsCache, combine with serverLeads and clientLeads
       const mergedMap = new Map();
-      for (const cl of clientLeads) {
-        const id = cl.leadId || cl.lead_id || cl.LeadID || cl.id;
-        if (id) mergedMap.set(String(id).toUpperCase(), cl);
+
+      // Seed with existing in-memory leadsCache items
+      for (const cur of leadsCache) {
+        const id = cur.leadId || cur.lead_id || cur.LeadID || cur.id;
+        if (id) mergedMap.set(String(id).toUpperCase(), normalizeLead(cur));
       }
+
+      // Merge server leads
       for (const sl of serverLeads) {
         const id = sl.leadId || sl.lead_id || sl.LeadID || sl.id;
-        if (id && !mergedMap.has(String(id).toUpperCase())) {
-          mergedMap.set(String(id).toUpperCase(), sl);
+        if (id) {
+          const cleanId = String(id).toUpperCase();
+          const existing = mergedMap.get(cleanId) || {};
+          mergedMap.set(cleanId, normalizeLead({ ...existing, ...sl }));
+        }
+      }
+
+      // Merge client saved leads from localStorage
+      for (const cl of clientLeads) {
+        const id = cl.leadId || cl.lead_id || cl.LeadID || cl.id;
+        if (id) {
+          const cleanId = String(id).toUpperCase();
+          const existing = mergedMap.get(cleanId) || {};
+          mergedMap.set(cleanId, normalizeLead({ ...existing, ...cl }));
         }
       }
 
@@ -1265,9 +1350,18 @@ async function fetchCustomerPortal(silent = false) {
     if (!res.ok) return;
 
     const data = await res.json();
-    const customerLeads = data.leads || [];
-    leadsCache = customerLeads;
-    renderCustomerPortal(customerLeads);
+    const customerLeads = (data.leads || []).map(normalizeLead);
+    const clientLeads = getClientSavedLeads();
+    
+    // Combine server customer leads with any locally saved leads for this session
+    const merged = [...customerLeads];
+    for (const cl of clientLeads) {
+      const id = cl.leadId || cl.id;
+      if (id && !merged.some(m => (m.leadId || m.id) === id)) {
+        merged.unshift(cl);
+      }
+    }
+    renderCustomerPortal(merged);
   } catch (err) {
     if (!silent) console.error('[Customer Portal Error]', err);
   }

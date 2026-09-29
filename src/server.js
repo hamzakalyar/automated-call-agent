@@ -542,6 +542,7 @@ app.post('/api/public/book', async (req, res) => {
     }).catch(e => console.warn('[Public Booking Notification Warning]', e.message));
 
     // Direct SMS notification dispatched to assigned technician's mobile phone
+    const activeStaff = customCrmDb.listUsers({ role: 'staff' });
     const targetTech = activeStaff.find(s => s.name === assignedTechName) || (activeStaff.length > 0 ? activeStaff[0] : null);
     if (targetTech) {
       notificationsService.sendTechnicianAssignmentAlert({

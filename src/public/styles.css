@@ -3234,7 +3234,8 @@ pre#modalJsonContent {
 }
 
 .top-bar-sep {
-  color: #475569;
+  margin: 0 0.85rem;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .top-bar-portal-btn {
@@ -3380,14 +3381,13 @@ pre#modalJsonContent {
 .hero-traditional-section {
   position: relative;
   padding: 2.75rem 0 3.25rem 0;
-  background: radial-gradient(circle at 82% 28%, rgba(254, 215, 170, 0.16) 0%, transparent 42%),
-              radial-gradient(circle at 15% 30%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
-              linear-gradient(90deg, 
-                rgba(10, 15, 29, 0.98) 0%, 
-                rgba(10, 15, 29, 0.92) 44%, 
-                rgba(10, 15, 29, 0.42) 72%, 
-                rgba(10, 15, 29, 0.14) 100%), 
-              url('/images/suburban-hero-bg.jpg') center 28% / cover no-repeat;
+  background: radial-gradient(circle at 20% 30%, rgba(2, 132, 199, 0.18) 0%, transparent 50%),
+              radial-gradient(circle at 80% 40%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+              linear-gradient(135deg, 
+                rgba(8, 12, 22, 0.96) 0%, 
+                rgba(15, 23, 42, 0.94) 50%, 
+                rgba(15, 23, 42, 0.90) 100%), 
+              url('/images/suburban-hero-bg.jpg') center 30% / cover no-repeat;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
 }
@@ -3500,22 +3500,23 @@ pre#modalJsonContent {
 }
 
 .pillar-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97) 0%, rgba(248, 250, 252, 0.97) 100%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.76);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-radius: 12px;
   padding: 0.75rem 0.85rem;
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14), 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .pillar-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  border-color: rgba(56, 189, 248, 0.4);
 }
 
 .pillar-icon-box {
@@ -3529,19 +3530,19 @@ pre#modalJsonContent {
 }
 
 .pillar-icon-box.box-blue { 
-  background: #e0f2fe; 
-  border: 1.5px solid #bae6fd; 
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.16); 
+  background: rgba(2, 132, 199, 0.18); 
+  border: 1.5px solid rgba(56, 189, 248, 0.35); 
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25); 
 }
 .pillar-icon-box.box-emerald { 
-  background: #d1fae5; 
-  border: 1.5px solid #a7f3d0; 
-  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.16); 
+  background: rgba(16, 185, 129, 0.18); 
+  border: 1.5px solid rgba(52, 211, 153, 0.35); 
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25); 
 }
 .pillar-icon-box.box-indigo { 
-  background: #e0e7ff; 
-  border: 1.5px solid #c7d2fe; 
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.16); 
+  background: rgba(99, 102, 241, 0.18); 
+  border: 1.5px solid rgba(129, 140, 248, 0.35); 
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25); 
 }
 
 .pillar-content {
@@ -3552,9 +3553,9 @@ pre#modalJsonContent {
 }
 
 .pillar-content strong {
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: #0f172a;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #ffffff;
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
@@ -3562,8 +3563,8 @@ pre#modalJsonContent {
 }
 
 .pillar-content span {
-  font-size: 0.69rem;
-  color: #64748b;
+  font-size: 0.7rem;
+  color: #94a3b8;
   line-height: 1.25;
   white-space: nowrap;
   overflow: hidden;
