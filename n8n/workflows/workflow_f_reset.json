@@ -1,0 +1,99 @@
+{
+  "name": "Workflow F — Reset Demo Data",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "contractor-reset",
+        "options": {}
+      },
+      "name": "Manual Reset Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "AIRTABLE_BASE_ID", "value": "={{ $env.AIRTABLE_BASE_ID }}" },
+            { "name": "AIRTABLE_LEADS_TABLE", "value": "={{ $env.AIRTABLE_LEADS_TABLE || 'Leads' }}" },
+            { "name": "AIRTABLE_LOG_TABLE", "value": "={{ $env.AIRTABLE_LOG_TABLE || 'Logs' }}" },
+            { "name": "CALCOM_API_KEY", "value": "={{ $env.CALCOM_API_KEY }}" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Config Loader",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.airtable.com/v0/" + $node['Config Loader'].json.AIRTABLE_BASE_ID + "/" + $node['Config Loader'].json.AIRTABLE_LEADS_TABLE,
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ 'Bearer ' + $env.AIRTABLE_ACCESS_TOKEN }}" }
+          ]
+        }
+      },
+      "name": "Fetch All Demo Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://api.airtable.com/v0/" + $node['Config Loader'].json.AIRTABLE_BASE_ID + "/" + $node['Config Loader'].json.AIRTABLE_LEADS_TABLE + "/" + $json.id,
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ 'Bearer ' + $env.AIRTABLE_ACCESS_TOKEN }}" }
+          ]
+        }
+      },
+      "name": "Delete Lead Record",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.airtable.com/v0/" + $node['Config Loader'].json.AIRTABLE_BASE_ID + "/" + $node['Config Loader'].json.AIRTABLE_LOG_TABLE,
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ 'Bearer ' + $env.AIRTABLE_ACCESS_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\n  \"fields\": {\n    \"Timestamp\": $now.toISOString(),\n    \"LeadID\": \"SYSTEM\",\n    \"Step\": \"Reset Demo Data\",\n    \"Outcome\": \"Success\",\n    \"Details\": \"Cleaned demo leads and bookings back to zero.\"\n  }\n}"
+      },
+      "name": "Log Reset Step",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [980, 300]
+    }
+  ],
+  "connections": {
+    "Manual Reset Webhook": {
+      "main": [[{ "node": "Config Loader", "type": "main", "index": 0 }]]
+    },
+    "Config Loader": {
+      "main": [[{ "node": "Fetch All Demo Leads", "type": "main", "index": 0 }]]
+    },
+    "Fetch All Demo Leads": {
+      "main": [[{ "node": "Delete Lead Record", "type": "main", "index": 0 }]]
+    },
+    "Delete Lead Record": {
+      "main": [[{ "node": "Log Reset Step", "type": "main", "index": 0 }]]
+    }
+  }
+}

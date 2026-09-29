@@ -1,0 +1,26 @@
+# Environment & Credentials
+.env
+.env.local
+*.pem
+*.key
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime and logs
+logs/
+*.log
+.DS_Store
+Thumbs.db
+
+# n8n local data
+.n8n/
+n8n_data/
+
+# SQLite Database
+data/
+*.sqlite*
+

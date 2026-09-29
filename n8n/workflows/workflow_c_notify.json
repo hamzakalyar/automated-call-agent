@@ -1,0 +1,125 @@
+{
+  "name": "Workflow C — Multi-Channel Notifications",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "contractor-notify",
+        "options": {}
+      },
+      "name": "Webhook Notify Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "CONTRACTOR_NOTIFY_CHANNEL", "value": "={{ ($env.CONTRACTOR_NOTIFY_CHANNEL || 'slack').toLowerCase() }}" },
+            { "name": "SLACK_WEBHOOK_URL", "value": "={{ $env.SLACK_WEBHOOK_URL }}" },
+            { "name": "TWILIO_ACCOUNT_SID", "value": "={{ $env.TWILIO_ACCOUNT_SID }}" },
+            { "name": "TWILIO_AUTH_TOKEN", "value": "={{ $env.TWILIO_AUTH_TOKEN }}" },
+            { "name": "TWILIO_FROM_NUMBER", "value": "={{ $env.TWILIO_FROM_NUMBER }}" },
+            { "name": "CONTRACTOR_PHONE", "value": "={{ $env.CONTRACTOR_PHONE }}" },
+            { "name": "BUSINESS_NAME", "value": "={{ $env.BUSINESS_NAME || 'Apex Elite' }}" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Config Loader",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $node['Config Loader'].json.CONTRACTOR_NOTIFY_CHANNEL }}",
+              "value2": "slack"
+            }
+          ]
+        }
+      },
+      "name": "Is Slack Channel?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $node['Config Loader'].json.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\n  \"text\": \"Contractor Alert: \" + ($json.body.lead.Name || 'New Lead'),\n  \"blocks\": [\n    {\n      \"type\": \"header\",\n      \"text\": { \"type\": \"plain_text\", \"text\": $json.body.isEscalation ? \"⚠️ HUMAN HANDOFF REQUIRED\" : \"🚨 NEW CONTRACTOR LEAD\" }\n    },\n    {\n      \"type\": \"section\",\n      \"fields\": [\n        { \"type\": \"mrkdwn\", \"text\": \"*Customer:* \" + ($json.body.lead.Name || 'Unknown') },\n        { \"type\": \"mrkdwn\", \"text\": \"*Phone:* \" + ($json.body.lead.Phone || 'N/A') },\n        { \"type\": \"mrkdwn\", \"text\": \"*Urgency:* \" + ($json.body.lead.Urgency || 'Normal') },\n        { \"type\": \"mrkdwn\", \"text\": \"*Slot:* \" + ($json.body.lead.BookedSlot || 'Pending') }\n      ]\n    }\n  ]\n}"
+      },
+      "name": "Send Slack Block Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [760, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/" + $node['Config Loader'].json.TWILIO_ACCOUNT_SID + "/Messages.json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Basic ' + Buffer.from($node['Config Loader'].json.TWILIO_ACCOUNT_SID + ':' + $node['Config Loader'].json.TWILIO_AUTH_TOKEN).toString('base64') }}"
+            },
+            { "name": "Content-Type", "value": "application/x-www-form-urlencoded" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "string",
+        "rawBody": "=To=" + encodeURIComponent($node['Config Loader'].json.CONTRACTOR_PHONE) + "&From=" + encodeURIComponent($node['Config Loader'].json.TWILIO_FROM_NUMBER) + "&Body=" + encodeURIComponent(($json.body.isEscalation ? '⚠️ ACTION REQUIRED: ' : '🚨 NEW LEAD: ') + $json.body.lead.Name + ' - ' + $json.body.lead.JobType)
+      },
+      "name": "Send Twilio Contractor SMS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [760, 420]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/" + $node['Config Loader'].json.TWILIO_ACCOUNT_SID + "/Messages.json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Basic ' + Buffer.from($node['Config Loader'].json.TWILIO_ACCOUNT_SID + ':' + $node['Config Loader'].json.TWILIO_AUTH_TOKEN).toString('base64') }}"
+            },
+            { "name": "Content-Type", "value": "application/x-www-form-urlencoded" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "string",
+        "rawBody": "=To=" + encodeURIComponent($json.body.lead.Phone) + "&From=" + encodeURIComponent($node['Config Loader'].json.TWILIO_FROM_NUMBER) + "&Body=" + encodeURIComponent('Hi ' + $json.body.lead.Name + ', your appointment with ' + $node['Config Loader'].json.BUSINESS_NAME + ' is scheduled for ' + ($json.body.lead.BookedSlot || 'review') + '.')
+      },
+      "name": "Send Customer Confirmation SMS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1000, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Notify Trigger": {
+      "main": [[{ "node": "Config Loader", "type": "main", "index": 0 }]]
+    },
+    "Config Loader": {
+      "main": [[{ "node": "Is Slack Channel?", "type": "main", "index": 0 }]]
+    },
+    "Is Slack Channel?": {
+      "main": [
+        [{ "node": "Send Slack Block Alert", "type": "main", "index": 0 }, { "node": "Send Customer Confirmation SMS", "type": "main", "index": 0 }],
+        [{ "node": "Send Twilio Contractor SMS", "type": "main", "index": 0 }, { "node": "Send Customer Confirmation SMS", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}

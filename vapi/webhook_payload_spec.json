@@ -1,0 +1,31 @@
+{
+  "description": "Vapi End-of-Call / Inbound Webhook Payload Schema",
+  "example_payload": {
+    "message": {
+      "type": "end-of-call-report",
+      "call": {
+        "id": "call_9f1a23e8-423b-410a-8bf8-2321908ad231",
+        "customer": {
+          "number": "+15551234567",
+          "name": "Sarah Jenkins"
+        },
+        "status": "ended",
+        "endedReason": "customer-ended-call"
+      },
+      "transcript": "Riley: Thanks for calling Apex Elite Plumbing & Heating. My name is Riley. Are you looking to schedule a service visit, or do you have an active plumbing or heating emergency?\nCaller: Hi, my name is Sarah Jenkins. I have a burst pipe in my basement at 742 Evergreen Terrace and water is leaking everywhere. My phone is 555-123-4567. Can someone come tomorrow morning?\nRiley: I'm so sorry to hear that, Sarah! I have booked a priority dispatch slot for tomorrow at 9:00 AM. Our technician will text you 30 minutes before arrival.",
+      "analysis": {
+        "summary": "Customer Sarah Jenkins reported an urgent burst pipe in her basement at 742 Evergreen Terrace. Booked for tomorrow 9 AM.",
+        "structuredData": {
+          "name": "Sarah Jenkins",
+          "phone": "+15551234567",
+          "location": "742 Evergreen Terrace, Springfield",
+          "job_type": "Plumbing",
+          "urgency": "Emergency",
+          "description": "Burst pipe leaking water in basement",
+          "preferred_slot": "Tomorrow 9:00 AM",
+          "needs_human": false
+        }
+      }
+    }
+  }
+}

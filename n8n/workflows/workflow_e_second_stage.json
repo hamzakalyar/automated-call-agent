@@ -1,0 +1,113 @@
+{
+  "name": "Workflow E — Second-Stage Automation (Review Request)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "name": "Interval Trigger (6 Hours)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "AIRTABLE_BASE_ID", "value": "={{ $env.AIRTABLE_BASE_ID }}" },
+            { "name": "AIRTABLE_LEADS_TABLE", "value": "={{ $env.AIRTABLE_LEADS_TABLE || 'Leads' }}" },
+            { "name": "BUSINESS_NAME", "value": "={{ $env.BUSINESS_NAME || 'Apex Elite' }}" },
+            { "name": "TWILIO_ACCOUNT_SID", "value": "={{ $env.TWILIO_ACCOUNT_SID }}" },
+            { "name": "TWILIO_AUTH_TOKEN", "value": "={{ $env.TWILIO_AUTH_TOKEN }}" },
+            { "name": "TWILIO_FROM_NUMBER", "value": "={{ $env.TWILIO_FROM_NUMBER }}" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Config Loader",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.airtable.com/v0/" + $node['Config Loader'].json.AIRTABLE_BASE_ID + "/" + $node['Config Loader'].json.AIRTABLE_LEADS_TABLE + "?filterByFormula=" + encodeURIComponent("AND({Status} = 'Booked', IS_BEFORE({BookedSlot}, NOW()))"),
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ 'Bearer ' + $env.AIRTABLE_ACCESS_TOKEN }}" }
+          ]
+        }
+      },
+      "name": "Query Completed Bookings",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/" + $node['Config Loader'].json.TWILIO_ACCOUNT_SID + "/Messages.json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Basic ' + Buffer.from($node['Config Loader'].json.TWILIO_ACCOUNT_SID + ':' + $node['Config Loader'].json.TWILIO_AUTH_TOKEN).toString('base64') }}"
+            },
+            { "name": "Content-Type", "value": "application/x-www-form-urlencoded" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "string",
+        "rawBody": "=To=" + encodeURIComponent($json.fields.Phone) + "&From=" + encodeURIComponent($node['Config Loader'].json.TWILIO_FROM_NUMBER) + "&Body=" + encodeURIComponent('Hi ' + $json.fields.Name + ', thank you for choosing ' + $node['Config Loader'].json.BUSINESS_NAME + '! Could you take 30 seconds to review our service? Reply with your rating 1-5.')
+      },
+      "name": "Send Review Request SMS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.airtable.com/v0/" + $node['Config Loader'].json.AIRTABLE_BASE_ID + "/" + $node['Config Loader'].json.AIRTABLE_LEADS_TABLE + "/" + $json.id,
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ 'Bearer ' + $env.AIRTABLE_ACCESS_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\n  \"fields\": {\n    \"Status\": \"Closed\",\n    \"NextAction\": \"Review request sent / service completed\"\n  }\n}"
+      },
+      "name": "Update Status: Closed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [980, 300]
+    }
+  ],
+  "connections": {
+    "Interval Trigger (6 Hours)": {
+      "main": [[{ "node": "Config Loader", "type": "main", "index": 0 }]]
+    },
+    "Config Loader": {
+      "main": [[{ "node": "Query Completed Bookings", "type": "main", "index": 0 }]]
+    },
+    "Query Completed Bookings": {
+      "main": [[{ "node": "Send Review Request SMS", "type": "main", "index": 0 }]]
+    },
+    "Send Review Request SMS": {
+      "main": [[{ "node": "Update Status: Closed", "type": "main", "index": 0 }]]
+    }
+  }
+}

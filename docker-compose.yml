@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: contractor_n8n_orchestrator
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=America/New_York
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      # Business Profile passed to n8n nodes
+      - BUSINESS_NAME=${BUSINESS_NAME}
+      - TRADE_TYPE=${TRADE_TYPE}
+      - SUPPORT_PHONE=${SUPPORT_PHONE}
+      - CONTRACTOR_PHONE=${CONTRACTOR_PHONE}
+      - CONTRACTOR_NOTIFY_CHANNEL=${CONTRACTOR_NOTIFY_CHANNEL}
+      # API Keys & Third-Party Integrations
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - AIRTABLE_ACCESS_TOKEN=${AIRTABLE_ACCESS_TOKEN}
+      - AIRTABLE_BASE_ID=${AIRTABLE_BASE_ID}
+      - AIRTABLE_LEADS_TABLE=${AIRTABLE_LEADS_TABLE}
+      - AIRTABLE_LOG_TABLE=${AIRTABLE_LOG_TABLE}
+      - CALCOM_API_KEY=${CALCOM_API_KEY}
+      - CALCOM_EVENT_TYPE_ID=${CALCOM_EVENT_TYPE_ID}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_FROM_NUMBER=${TWILIO_FROM_NUMBER}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - FOLLOWUP_DELAY_HOURS=${FOLLOWUP_DELAY_HOURS}
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n/workflows:/home/node/workflows:ro
+
+volumes:
+  n8n_data:

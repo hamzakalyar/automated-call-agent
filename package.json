@@ -1,0 +1,39 @@
+{
+  "name": "contractor-front-office-automation",
+  "version": "1.0.0",
+  "description": "End-to-end Contractor Front Office Automation Demo with Voice AI, Claude Extraction, n8n Orchestration, Airtable CRM, Cal.com Scheduling, and Twilio/Slack Notifications",
+  "main": "src/server.js",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "tunnel": "node src/tunnel.js",
+    "test": "node --check src/server.js"
+  },
+  "keywords": [
+    "contractor",
+    "automation",
+    "voice-ai",
+    "vapi",
+    "claude",
+    "n8n",
+    "airtable",
+    "calcom",
+    "twilio",
+    "slack"
+  ],
+  "author": "Antigravity Pair Programmer",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.23.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "localtunnel": "^2.0.2"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "name": "Workflow B — Schedule (Cal.com)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "contractor-schedule",
+        "options": {}
+      },
+      "name": "Webhook Schedule Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "CALCOM_API_KEY", "value": "={{ $env.CALCOM_API_KEY }}" },
+            { "name": "CALCOM_EVENT_TYPE_ID", "value": "={{ $env.CALCOM_EVENT_TYPE_ID }}" },
+            { "name": "AIRTABLE_BASE_ID", "value": "={{ $env.AIRTABLE_BASE_ID }}" },
+            { "name": "AIRTABLE_LEADS_TABLE", "value": "={{ $env.AIRTABLE_LEADS_TABLE || 'Leads' }}" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Config Loader",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.cal.com/v1/slots?apiKey=" + $node['Config Loader'].json.CALCOM_API_KEY + "&eventTypeId=" + $node['Config Loader'].json.CALCOM_EVENT_TYPE_ID + "&startTime=" + $now.toISOString() + "&endTime=" + $now.plus({ days: 3 }).toISOString()
+      },
+      "name": "Cal.com Query Availability",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ Object.keys($json.slots || {}).length }}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "name": "Has Open Slot?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [740, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.cal.com/v1/bookings?apiKey=" + $node['Config Loader'].json.CALCOM_API_KEY,
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\n  \"eventTypeId\": parseInt($node['Config Loader'].json.CALCOM_EVENT_TYPE_ID),\n  \"start\": Object.values($node['Cal.com Query Availability'].json.slots)[0][0].time,\n  \"name\": $json.body.lead.Name || 'Valued Customer',\n  \"email\": ($json.body.lead.Phone || '555').replace(/\\D/g, '') + '@customer.demo',\n  \"notes\": $json.body.lead.Description || 'Contractor booking'\n}"
+      },
+      "name": "Cal.com Create Booking",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [980, 180]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.airtable.com/v0/" + $node['Config Loader'].json.AIRTABLE_BASE_ID + "/" + $node['Config Loader'].json.AIRTABLE_LEADS_TABLE + "/" + ($json.body.lead.id || $json.body.lead.LeadID),
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ 'Bearer ' + $env.AIRTABLE_ACCESS_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\n  \"fields\": {\n    \"Status\": \"Booked\",\n    \"BookedSlot\": $node['Cal.com Create Booking'].json.booking.startTime || 'Confirmed',\n    \"NextAction\": \"Dispatch technician\"\n  }\n}"
+      },
+      "name": "Airtable Update: Booked",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1200, 180]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.airtable.com/v0/" + $node['Config Loader'].json.AIRTABLE_BASE_ID + "/" + $node['Config Loader'].json.AIRTABLE_LEADS_TABLE + "/" + ($json.body.lead.id || $json.body.lead.LeadID),
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ 'Bearer ' + $env.AIRTABLE_ACCESS_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\n  \"fields\": {\n    \"Status\": \"Awaiting Response\",\n    \"NextAction\": \"Send booking link / follow up\"\n  }\n}"
+      },
+      "name": "Airtable Update: Awaiting Response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [980, 420]
+    }
+  ],
+  "connections": {
+    "Webhook Schedule Trigger": {
+      "main": [[{ "node": "Config Loader", "type": "main", "index": 0 }]]
+    },
+    "Config Loader": {
+      "main": [[{ "node": "Cal.com Query Availability", "type": "main", "index": 0 }]]
+    },
+    "Cal.com Query Availability": {
+      "main": [[{ "node": "Has Open Slot?", "type": "main", "index": 0 }]]
+    },
+    "Has Open Slot?": {
+      "main": [
+        [{ "node": "Cal.com Create Booking", "type": "main", "index": 0 }],
+        [{ "node": "Airtable Update: Awaiting Response", "type": "main", "index": 0 }]
+      ]
+    },
+    "Cal.com Create Booking": {
+      "main": [[{ "node": "Airtable Update: Booked", "type": "main", "index": 0 }]]
+    }
+  }
+}

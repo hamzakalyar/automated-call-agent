@@ -1,0 +1,24 @@
+# fly.toml app configuration file for Fly.io Free / Hobby Tier
+app = "apex-elite-contractor-ai"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[mounts]
+  source = "apex_crm_data"
+  destination = "/app/data"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "3000"
+  VOICE_ENGINE = "gemini"
+  GEMINI_MODEL = "gemini-3.5-flash-lite"

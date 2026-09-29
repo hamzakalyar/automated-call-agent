@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Apex Elite — Field Technician Mobile Portal</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Mobile-first Van App Styles */
+    body {
+      background: var(--bg-app);
+      font-family: var(--font-primary);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .tech-app-shell {
+      max-width: 520px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border-subtle);
+      border-right: 1px solid var(--border-subtle);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .tech-header {
+      padding: 1.15rem 1.35rem;
+      background: var(--bg-header);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .tech-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+    }
+
+    .tech-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+
+    .tech-switcher-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .tech-content {
+      padding: 1.35rem;
+      flex: 1;
+    }
+
+    .job-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-xl);
+      padding: 1.35rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-card), var(--inner-glow);
+      transition: all 0.22s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .job-card.emergency {
+      border-left: 4px solid var(--accent-rose);
+      box-shadow: 0 10px 30px rgba(244, 63, 94, 0.12);
+    }
+
+    .job-card.booked {
+      border-left: 4px solid var(--accent-emerald);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.12);
+    }
+
+    .job-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.85rem;
+    }
+
+    .job-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .job-customer-name {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    .job-action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 1.15rem 0;
+    }
+
+    .job-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.75rem 0.85rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .job-btn-phone {
+      background: rgba(16, 185, 129, 0.16);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .job-btn-phone:hover {
+      background: rgba(16, 185, 129, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .job-btn-nav {
+      background: rgba(6, 182, 212, 0.16);
+      color: #38bdf8;
+      border-color: rgba(6, 182, 212, 0.35);
+    }
+
+    .job-btn-nav:hover {
+      background: rgba(6, 182, 212, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .workflow-stepper {
+      display: flex;
+      gap: 0.45rem;
+      margin-top: 0.85rem;
+      padding-top: 0.85rem;
+      border-top: 1px dashed var(--border-subtle);
+    }
+
+    .step-btn {
+      flex: 1;
+      padding: 0.55rem 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-align: center;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-input);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .step-btn:hover {
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    .step-btn.active {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.45);
+    }
+
+    .step-btn.complete {
+      background: var(--accent-emerald);
+      color: #ffffff;
+      border-color: var(--accent-emerald);
+      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.45);
+    }
+
+    .field-notes-input {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 0.75rem;
+      padding: 0.65rem 0.75rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      font-family: var(--font-primary);
+      resize: vertical;
+    }
+
+    .field-notes-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px var(--accent-primary-glow);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tech-app-shell">
+    <!-- Header: Technician Identity & Duty Status -->
+    <header class="tech-header">
+      <div class="tech-header-top">
+        <div class="tech-brand">
+          <span>🔧</span>
+          <span>Apex Field Portal</span>
+        </div>
+        <a href="/" style="font-size: 0.75rem; color: var(--accent-primary); text-decoration: none;">
+          &larr; Admin Command Center
+        </a>
+      </div>
+
+      <div class="tech-switcher-box">
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <select id="techProfileSelector" class="form-input" style="flex: 1; font-weight: 600; font-size: 0.85rem;">
+            <!-- Loaded dynamically from /api/team -->
+            <option value="">Loading Field Staff...</option>
+          </select>
+          <select id="dutyStatusSelector" class="form-input" style="width: 140px; font-size: 0.8rem;">
+            <option value="Available">🟢 Available</option>
+            <option value="On Job">🟡 On Job</option>
+            <option value="Off Duty">⚪ Off Duty</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content: Active Work Orders -->
+    <main class="tech-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+          <h2 style="font-size: 1.1rem; margin: 0; font-weight: 700;">My Assigned Jobs</h2>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0 0;" id="assignedJobsSubtitle">
+            Live dispatches synced from Command Center
+          </p>
+        </div>
+        <button id="btnRefreshJobs" class="btn btn-secondary btn-xs" style="padding: 4px 8px;">
+          🔄 Refresh
+        </button>
+      </div>
+
+      <div id="techJobsContainer">
+        <!-- Dynamically rendered jobs -->
+        <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+          Loading your active work orders...
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+  </div>
+
+  <script src="tech.js"></script>
+</body>
+</html>

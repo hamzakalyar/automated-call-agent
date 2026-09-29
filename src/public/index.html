@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Elite — Contractor Front Office AI Command Center</title>
+  <meta name="description" content="Executive AI front office command center for contractors featuring standard sidebar navigation, multi-role portals (Admin, Staff, Customer), autonomous Voice AI, dynamic services catalog, and field dispatch.">
+  
+  <!-- Modern Typography (Plus Jakarta Sans, Outfit, JetBrains Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <link rel="stylesheet" href="styles.css?v=21">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       PUBLIC CUSTOMER LANDING & FAST BOOKING PAGE (NO ACCOUNT NEEDED)
+       ========================================================================== -->
+  <div class="public-landing-page apex-instant-booking-landing" id="publicLandingPage">
+    
+    <!-- Top Utility Bar (Clean, Minimal, Zero Clutter) -->
+    <div class="landing-top-bar">
+      <div class="landing-container top-bar-inner">
+        <div class="top-bar-left">
+          <span class="pulse-dot-green"></span>
+          <span class="fleet-status-text"><strong>Springfield Fleet Live:</strong> 4 Vans On Standby • Avg Emergency Arrival: <strong>38 Mins</strong></span>
+        </div>
+        <div class="top-bar-right">
+          <a href="tel:+15550192834" class="top-bar-phone">📞 24/7 Emergency Line: <strong>(555) 019-2834</strong></a>
+          <span class="top-bar-sep">|</span>
+          <button class="top-bar-portal-btn" onclick="window.navigateTo('/portal')">🔐 Staff & Admin Portal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Executive Clean Header -->
+    <header class="landing-main-header">
+      <div class="landing-container header-inner">
+        <!-- Logo -->
+        <div class="header-brand" onclick="window.navigateTo('/home')" role="button">
+          <div class="header-brand-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <div class="header-brand-info">
+            <span class="header-brand-title">Apex Elite</span>
+            <span class="header-brand-desc">Front Office AI & Emergency Fleet Dispatch</span>
+          </div>
+        </div>
+
+        <!-- Clean Navigation -->
+        <nav class="header-nav">
+          <a href="#servicesSection" class="header-nav-link">Services & Rates</a>
+          <a href="#trackingSection" class="header-nav-link">Track Active Van</a>
+          <a href="#aiReceptionSection" class="header-nav-link">24/7 AI Voice Intake</a>
+          <a href="#faqSection" class="header-nav-link">FAQ</a>
+        </nav>
+
+        <!-- Right Quick Contact -->
+        <div class="header-right-actions">
+          <a href="javascript:void(0)" class="header-staff-link" onclick="window.navigateTo('/portal')">Staff Portal</a>
+          <a href="tel:+15550192834" class="btn-call-hotline" title="Call Emergency Hotline">
+            <span class="phone-pulse-wave">〰</span>
+            <span>(555) 019-2834</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Traditional Contractor Hero Section (State-of-the-Art Conversion Layout) -->
+    <section class="hero-traditional-section" id="heroBookingSection">
+      <div class="landing-container">
+        
+        <div class="hero-split-grid">
+          
+          <!-- LEFT COLUMN: Authority, Guarantees & 2x2 Feature Box Grid -->
+          <div class="hero-info-column">
+            
+            <div class="hero-trust-kicker">
+              <span class="kicker-radar-pulse"></span>
+              <span class="kicker-bold-text">24/7 RAPID RESPONSE FLEET</span>
+              <span class="kicker-sep">•</span>
+              <span class="kicker-light-text">SPRINGFIELD &amp; 25-MILE METRO</span>
+              <span class="kicker-fleet-status">🟢 4 Vans On Patrol</span>
+            </div>
+
+            <h1 class="hero-main-title">
+              Springfield's #1 Emergency<br>
+              <span class="hero-title-accent">Plumbing &amp; HVAC</span> Repair Specialists
+            </h1>
+
+            <p class="hero-main-description">
+              From burst pipes to furnace breakdowns, Apex Elite dispatches certified master technicians across Greater Springfield. Our rolling warehouses are pre-stocked with 2,400+ commercial-grade parts to resolve 94% of repairs on the very first visit.
+            </p>
+
+            <!-- Quick Proof Metrics Bar -->
+            <div class="hero-quick-proof-bar">
+              <div class="proof-metric-item">
+                <span class="proof-metric-icon">⚡</span>
+                <div class="proof-metric-content">
+                  <strong>45 Min</strong>
+                  <span>Avg Emergency Arrival</span>
+                </div>
+              </div>
+              <div class="proof-metric-divider"></div>
+              <div class="proof-metric-item">
+                <span class="proof-metric-icon">⭐</span>
+                <div class="proof-metric-content">
+                  <strong>4.9 / 5.0</strong>
+                  <span>1,240+ Verified Reviews</span>
+                </div>
+              </div>
+              <div class="proof-metric-divider"></div>
+              <div class="proof-metric-item">
+                <span class="proof-metric-icon">💵</span>
+                <div class="proof-metric-content">
+                  <strong>$0 Deposit</strong>
+                  <span>Pay Only After Work Done</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2x2 Feature Cards Grid (Enhanced Premium Cards) -->
+            <div class="hero-features-2x2-grid">
+              
+              <div class="feature-card-white">
+                <div class="feature-card-icon-box box-blue">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                </div>
+                <div class="feature-card-text">
+                  <strong>45 Min Rapid Dispatch</strong>
+                  <span>Real-time GPS fleet routing dispatches Springfield techs immediately.</span>
+                </div>
+              </div>
+
+              <div class="feature-card-white">
+                <div class="feature-card-icon-box box-emerald">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"/>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                </div>
+                <div class="feature-card-text">
+                  <strong>Upfront Flat-Rate Pricing</strong>
+                  <span>Clear flat-rate quote before work starts. Zero overtime or night surcharges.</span>
+                </div>
+              </div>
+
+              <div class="feature-card-white">
+                <div class="feature-card-icon-box box-indigo">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <polyline points="9 12 11 14 15 10"/>
+                  </svg>
+                </div>
+                <div class="feature-card-text">
+                  <strong>Licensed & Insured</strong>
+                  <span>State-licensed Master Plumbers (MP-90284) & EPA HVAC techs.</span>
+                </div>
+              </div>
+
+              <div class="feature-card-white">
+                <div class="feature-card-icon-box box-teal">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="6"/>
+                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+                  </svg>
+                </div>
+                <div class="feature-card-text">
+                  <strong>1-Year Written Warranty</strong>
+                  <span>Every valve, pipe, coil, and repair backed by rock-solid guarantee.</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Social Proof Badges with Customer Avatar Stack -->
+            <div class="hero-social-proof-row">
+              <div class="proof-pill-dark proof-pill-reviews">
+                <div class="proof-avatar-stack">
+                  <span class="avatar-circle av-1" title="Sarah M. — Verified Homeowner">SM</span>
+                  <span class="avatar-circle av-2" title="David K. — Commercial Facility">DK</span>
+                  <span class="avatar-circle av-3" title="Robert T. — Springfield Resident">RT</span>
+                </div>
+                <div class="proof-stars-wrap">
+                  <span class="star-rating">★★★★★</span>
+                  <span class="proof-score"><strong>4.9</strong> / 5.0</span>
+                  <span class="proof-count">(1,240+ Reviews)</span>
+                </div>
+              </div>
+              <div class="proof-pill-dark proof-pill-bbb">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <polyline points="9 12 11 14 15 10"/>
+                </svg>
+                <span><strong>BBB Accredited</strong> A+</span>
+              </div>
+              <div class="proof-pill-dark proof-pill-lic">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                <span><strong>State Lic.</strong> MP-90284</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN: High-Conversion Reference Form Card -->
+          <div class="hero-form-column">
+            <div class="hero-form-card" id="fastBookingSection">
+              
+              <!-- Segmented Urgency Switcher Tabs -->
+              <div class="hero-urgency-segmented-bar">
+                <button type="button" class="urgency-segment-btn active" id="segEmergencyBtn" onclick="window.selectHeroUrgencyTab('Emergency')">
+                  <span class="seg-icon">🚨</span> EMERGENCY DISPATCH (45m)
+                </button>
+                <button type="button" class="urgency-segment-btn" id="segScheduledBtn" onclick="window.selectHeroUrgencyTab('Medium')">
+                  <span class="seg-icon">📅</span> SCHEDULE STANDARD SERVICE
+                </button>
+              </div>
+
+              <div class="form-title-group">
+                <h2 class="hero-form-title">Get a Certified Tech on the Way</h2>
+                <div class="form-live-eta-pill">
+                  <span class="status-indicator live">●</span>
+                  <span>Live Dispatch Active • Technicians On-Duty Now • 38m Avg Arrival</span>
+                </div>
+              </div>
+
+              <form id="publicFastBookingForm" onsubmit="event.preventDefault(); window.submitPublicFastBooking();" class="hero-clean-form">
+                
+                <!-- Select Urgent Issue (2x2 Grid) with Clear Option Button -->
+                <div class="form-issue-section">
+                  <div class="form-section-header-row">
+                    <span class="form-section-title">Select Urgent Issue</span>
+                    <button type="button" class="btn-clear-option visible" id="btnClearIssueOption" onclick="window.clearSelectedIssue(event)" title="Clear selected issue option">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                      <span>Clear Option</span>
+                    </button>
+                  </div>
+                  <div id="issueClearedNote" class="issue-cleared-note" style="display: none;">
+                    <span>✓ Option cleared — Master tech will diagnose on site</span>
+                  </div>
+                  <div class="issue-radio-grid">
+                    <label class="issue-radio-card active" onclick="window.selectQuickIssue('Burst Pipe Emergency & Repiping', this, event)">
+                      <input type="radio" name="quickIssueRadio" value="Burst Pipe Emergency & Repiping" checked>
+                      <span class="custom-radio-dot"></span>
+                      <span class="issue-radio-label">💧 Pipe Burst / Major Leak</span>
+                    </label>
+                    
+                    <label class="issue-radio-card" onclick="window.selectQuickIssue('AC / Heat Pump Emergency Repair', this, event)">
+                      <input type="radio" name="quickIssueRadio" value="AC / Heat Pump Emergency Repair">
+                      <span class="custom-radio-dot"></span>
+                      <span class="issue-radio-label">🔥 No Heat / AC Out</span>
+                    </label>
+                    
+                    <label class="issue-radio-card" onclick="window.selectQuickIssue('Clogged Drain & Hydro-Jetting', this, event)">
+                      <input type="radio" name="quickIssueRadio" value="Clogged Drain & Hydro-Jetting">
+                      <span class="custom-radio-dot"></span>
+                      <span class="issue-radio-label">🚽 Sewage / Drain Clog</span>
+                    </label>
+                    
+                    <label class="issue-radio-card" onclick="window.selectQuickIssue('Emergency Diagnostic & Inspection', this, event)">
+                      <input type="radio" name="quickIssueRadio" value="Emergency Diagnostic & Inspection">
+                      <span class="custom-radio-dot"></span>
+                      <span class="issue-radio-label">⚡ Other Urgent Issue</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Short Form Fields with Reset Option -->
+                <div class="form-short-form-section">
+                  <div class="form-section-header-row" style="margin-top: 0.85rem;">
+                    <span class="form-section-title">Customer Details</span>
+                    <button type="button" class="btn-clear-option btn-reset-form" onclick="window.clearHeroForm(event)" title="Clear all form fields">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                        <path d="M3 3v5h5"/>
+                      </svg>
+                      <span>Reset Form</span>
+                    </button>
+                  </div>
+
+                  <div class="form-row-2">
+                    <div class="form-field-group">
+                      <label for="publicBookName" class="field-label-text">Full Name</label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                          <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        <input type="text" id="publicBookName" class="field-text-input input-has-icon" placeholder="Evelyn Reed" required autocomplete="name">
+                      </div>
+                    </div>
+
+                    <div class="form-field-group">
+                      <label for="publicBookPhone" class="field-label-text">Phone (for tracking & SMS)</label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        <input type="tel" id="publicBookPhone" class="field-text-input input-has-icon" placeholder="(555) 349-8120" required autocomplete="tel">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-field-group" style="margin-top: 0.65rem;">
+                    <label for="publicBookAddress" class="field-label-text">Street Address</label>
+                    <div class="input-with-icon">
+                      <svg class="input-icon-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                      </svg>
+                      <input type="text" id="publicBookAddress" class="field-text-input input-has-icon" placeholder="112 Oakwood Drive, Springfield" required autocomplete="street-address">
+                    </div>
+                    <span class="field-micro-hint">📍 Springfield &amp; surrounding 25-mile radius covered with zero travel surcharge.</span>
+                  </div>
+                </div>
+
+                <!-- Scheduled Date & Time Row (Smoothly visible if Schedule tab is active) -->
+                <div class="form-row-2" id="scheduledSlotRow" style="display: none; margin-top: 0.65rem;">
+                  <div class="form-field-group">
+                    <label for="publicBookDate" class="field-label-text">Preferred Date</label>
+                    <input type="date" id="publicBookDate" class="field-text-input">
+                  </div>
+                  <div class="form-field-group">
+                    <label for="publicBookSlot" class="field-label-text">Time Window</label>
+                    <select id="publicBookSlot" class="field-text-input field-select-input">
+                      <option value="Morning (8:00 AM - 12:00 PM)">Morning (8:00 AM - 12:00 PM)</option>
+                      <option value="Afternoon (12:00 PM - 4:00 PM)">Afternoon (12:00 PM - 4:00 PM)</option>
+                      <option value="Evening (4:00 PM - 8:00 PM)">Evening (4:00 PM - 8:00 PM)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Hidden Form Controls for 100% Backwards Compatibility with CRM & APIs -->
+                <select id="publicBookServiceSelect" style="display: none;">
+                  <option value="Burst Pipe Emergency & Repiping" selected>Burst Pipe Emergency & Repiping</option>
+                  <option value="AC / Heat Pump Emergency Repair">AC / Heat Pump Emergency Repair</option>
+                  <option value="Clogged Drain & Hydro-Jetting">Clogged Drain & Hydro-Jetting</option>
+                  <option value="Emergency Diagnostic & Inspection">Emergency Diagnostic & Inspection</option>
+                  <option value="General Plumbing & HVAC Diagnostic">General Plumbing & HVAC Diagnostic</option>
+                </select>
+                <input type="email" id="publicBookEmail" style="display: none;" value="customer@example.com">
+                <textarea id="publicBookDescription" style="display: none;"></textarea>
+                <input type="radio" name="publicUrgency" value="Emergency" checked style="display: none;">
+                <input type="radio" name="publicUrgency" value="Medium" style="display: none;">
+                <div id="bookingEstimateBadge" style="display: none;"><span id="estimateTitle"></span><span id="estimateDesc"></span></div>
+
+                <!-- Trust Guarantee Note -->
+                <div class="form-guarantee-note">
+                  <span class="shield-icon">🛡️</span>
+                  <span><strong>Zero Advance Deposit:</strong> Pay only after technician completes work and passes inspection.</span>
+                </div>
+
+                <!-- Big Red / Coral CTA Button with Hover Sweep Effect -->
+                <button type="submit" id="btnSubmitPublicBooking" class="btn-dispatch-coral-red">
+                  <span class="btn-siren-icon">🚨</span>
+                  <span id="btnSubmitText">DISPATCH NEAREST TECH NOW</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+                <div class="btn-security-subtext">
+                  <span>🔒 256-Bit Encrypted Dispatch • Instant SMS Alerts Sent to Customer &amp; Technician</span>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CALL DIRECT Bar Below Hero (Exact Match to Bottom of Reference Screenshot) -->
+    <div class="hero-call-direct-strip">
+      <div class="landing-container call-direct-strip-inner">
+        <span class="strip-call-icon">📞</span>
+        <span class="strip-call-text">
+          <strong>CALL DIRECT</strong> for Immediate Emergency Dispatch: <a href="tel:+15550192834" class="call-direct-phone-link">(555) 019-2834</a>
+        </span>
+        <span class="strip-badge-live">Live Master Plumber Answers in &lt; 20 Seconds</span>
+      </div>
+    </div>
+
+    <!-- Services & Transparent Diagnostic Rates Section -->
+    <section class="landing-services-section" id="servicesSection">
+      <div class="landing-container">
+        <div class="section-title-wrap">
+          <span class="section-kicker">SERVICES & UPFRONT RATES</span>
+          <h2 class="section-heading">Certified Trade Fleet Capabilities</h2>
+          <p class="section-subtext">Upfront diagnostic pricing with zero hidden travel fees. Fully equipped master vans ready for first-visit repairs.</p>
+        </div>
+
+        <div class="services-clean-grid" id="landingServicesGrid">
+          <div class="catalog-loading-placeholder">
+            <span>⏳</span> Loading certified trade dispatch services...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Order & Van Tracking Section -->
+    <section class="landing-tracking-section" id="trackingSection">
+      <div class="landing-container">
+        <div class="tracking-clean-box">
+          <div class="tracking-box-header">
+            <span class="section-kicker">📍 REAL-TIME DISPATCH RADAR</span>
+            <h2 class="section-heading">Track Your Active Appointment</h2>
+            <p class="section-subtext">Enter your <strong>Tracking ID</strong> (e.g. LD-8942) or customer <strong>Phone Number</strong>. Zero login or password required.</p>
+          </div>
+
+          <div class="tracking-search-bar">
+            <div class="tracking-input-wrap">
+              <input 
+                type="text" 
+                id="landingTrackInput" 
+                class="tracking-input-field" 
+                placeholder="Enter Tracking ID (e.g. LD-8942) or Phone (+1 555...)"
+                onkeydown="if(event.key === 'Enter') handlePublicTrack('landing');"
+              />
+            </div>
+            <button type="button" id="btnLandingTrack" class="btn btn-primary" onclick="handlePublicTrack('landing')">
+              <span>🔍 Track Service</span>
+            </button>
+          </div>
+
+          <div class="tracking-demo-pills">
+            <span class="demo-pill-label">Try test demo:</span>
+            <button type="button" class="demo-pill-btn" onclick="quickFillTrack('LD-8942')">LD-8942</button>
+            <button type="button" class="demo-pill-btn" onclick="quickFillTrack('+1 (555) 019-2834')">+1 (555) 019-2834</button>
+          </div>
+
+          <div id="landingTrackResult" class="tracking-result-box" style="display: none;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 24/7 AI Voice Receptionist Section -->
+    <section class="landing-ai-section" id="aiReceptionSection">
+      <div class="landing-container">
+        <div class="ai-clean-card">
+          <div class="ai-card-content">
+            <div class="ai-avatar-circle">
+              <span>🎙️</span>
+              <span class="ai-live-badge">LIVE</span>
+            </div>
+            <div class="ai-text-block">
+              <span class="ai-kicker">AUTOMATED FRONT OFFICE DISPATCH</span>
+              <h3 class="ai-heading">Prefer to Call? Meet Riley, our 24/7 AI Receptionist</h3>
+              <p class="ai-paragraph">Riley answers instantly with zero hold time, diagnoses emergency issues in 60 seconds, and dispatches the closest master technician with automated SMS tracking.</p>
+            </div>
+          </div>
+          <div class="ai-card-actions">
+            <a href="tel:+15550192834" class="btn-ai-call-action">
+              <span>📞</span> Call Riley: (555) 019-2834
+            </a>
+            <span class="ai-guarantee-text">Direct Line • Zero Waiting Queue</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verified Customer Reviews -->
+    <section class="landing-reviews-section">
+      <div class="landing-container">
+        <div class="section-title-wrap">
+          <span class="section-kicker">CUSTOMER FEEDBACK</span>
+          <h2 class="section-heading">Trusted Across Greater Springfield</h2>
+          <p class="section-subtext">Verified 4.9-star rating across commercial facilities and residential homeowners.</p>
+        </div>
+
+        <div class="reviews-clean-grid">
+          <div class="review-clean-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"Basement pipe burst on a Sunday morning. Booked online in 30 seconds with no account hassle. Dave Miller arrived in 38 minutes and saved our flooring."</p>
+            <div class="review-author">
+              <strong>Marcus Sterling</strong>
+              <span>Springfield West • Burst Pipe Emergency</span>
+            </div>
+          </div>
+
+          <div class="review-clean-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"I called their phone number and spoke with Riley, the AI receptionist. She booked my heat pump diagnostics immediately and texted me the van tracker. Incredible tech."</p>
+            <div class="review-author">
+              <strong>Elena Rostova</strong>
+              <span>Highland Park • Heat Pump Diagnostics</span>
+            </div>
+          </div>
+
+          <div class="review-clean-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"Clean, professional, and no hidden fees. They fixed our commercial boiler during peak winter with zero downtime. Apex Elite is our primary vendor."</p>
+            <div class="review-author">
+              <strong>David Chen</strong>
+              <span>Grandview Retail Plaza • Commercial Boiler</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="landing-faq-section" id="faqSection">
+      <div class="landing-container">
+        <div class="section-title-wrap">
+          <span class="section-kicker">ANSWERS</span>
+          <h2 class="section-heading">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="faq-clean-list">
+          <div class="faq-item active">
+            <button class="faq-question-btn" onclick="toggleFaq(this)">
+              <span>Do I really not need an account or password to book?</span>
+              <span class="faq-arrow">▾</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes, 100%. When an emergency happens, the last thing you need is a password reset link. Just provide your address and phone number. We instantly dispatch the van and text you a secure Magic Tracking link.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question-btn" onclick="toggleFaq(this)">
+              <span>How fast does the emergency technician actually arrive?</span>
+              <span class="faq-arrow">▾</span>
+            </button>
+            <div class="faq-answer">
+              <p>Our emergency response SLA is 45 to 60 minutes anywhere in greater Springfield. Our fleet vans are pre-stocked with replacement valves, coils, and copper piping for immediate repairs.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question-btn" onclick="toggleFaq(this)">
+              <span>When and how do I pay?</span>
+              <span class="faq-arrow">▾</span>
+            </button>
+            <div class="faq-answer">
+              <p>We do not charge advance deposits. You pay only after the technician finishes the diagnostic or repair, inspects the work with you, and presents the transparent invoice. We accept all major credit cards and checks on arrival.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Executive Footer -->
+    <footer class="landing-footer">
+      <div class="landing-container footer-grid">
+        <div class="footer-col brand-col">
+          <div class="footer-brand-title">Apex Elite</div>
+          <p class="footer-tagline">Springfield's premier on-demand mechanical services & 24/7 AI-driven emergency dispatch network.</p>
+          <div class="footer-contact-info">📞 24/7 Hotline: (555) 019-2834</div>
+          <div class="footer-contact-info">📍 Fleet HQ: 500 Enterprise Way, Springfield</div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Services</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#servicesSection">Emergency Plumbing</a></li>
+            <li><a href="#servicesSection">HVAC & Air Conditioning</a></li>
+            <li><a href="#servicesSection">Water Heaters & Boilers</a></li>
+            <li><a href="#servicesSection">Hydro-Jetting & Sewer</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Quick Actions</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#fastBookingSection">Fast Booking (No Login)</a></li>
+            <li><a href="#trackingSection">Track Active Van</a></li>
+            <li><a href="#aiReceptionSection">AI Voice Receptionist</a></li>
+            <li><a href="#faqSection">Frequently Asked Questions</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Internal Portal</h4>
+          <p class="footer-portal-text">Dispatcher and technician command center access.</p>
+          <button class="btn btn-secondary btn-sm" onclick="window.navigateTo('/portal')">🔐 Staff & Admin Portal</button>
+        </div>
+      </div>
+
+      <div class="landing-container footer-bottom">
+        <span>&copy; 2026 Apex Elite Mechanical & AI Dispatch Inc. All rights reserved.</span>
+        <div class="footer-license-badges">
+          <span class="license-badge">Licensed & Insured Master Plumbers</span>
+          <span class="license-badge">EPA 608 Universal Certified</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Mobile Sticky Emergency Bar -->
+    <div class="landing-mobile-bar">
+      <div class="landing-container mobile-bar-inner">
+        <div class="mobile-bar-left">
+          <span class="pulse-dot-red"></span>
+          <span>Emergency Response: <strong>38 Mins</strong></span>
+        </div>
+        <div class="mobile-bar-actions">
+          <a href="tel:+15550192834" class="btn btn-secondary btn-xs">📞 Call (555) 019-2834</a>
+          <a href="#fastBookingSection" class="btn btn-primary btn-xs">⚡ Fast Book</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==========================================================================
+       INTERNAL MULTI-ROLE COMMAND CENTER WRAPPER (Admin / Staff / Customer)
+       ========================================================================== -->
+  <div class="app-layout-wrapper" id="internalPortalWrapper" style="display: none;">
+    
+    <!-- SIDEBAR NAVIGATION (Standard SaaS Dashboard Architecture) -->
+    <aside class="app-sidebar" id="appSidebar">
+      <!-- Brand Header -->
+      <div class="sidebar-brand">
+        <div class="sidebar-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div class="sidebar-brand-text">
+          <div class="sidebar-brand-title">Apex Elite</div>
+          <div class="sidebar-brand-badge">Front Office AI</div>
+        </div>
+      </div>
+
+      <!-- Quick 1-Click Link to Public Landing Page -->
+      <div class="sidebar-public-switch-box">
+        <button class="sidebar-public-btn" id="btnSidebarToLanding" title="Switch to Customer Public Fast Booking Landing Page">
+          <span class="btn-icon">🌐</span>
+          <span>View Public Landing Page</span>
+          <span class="btn-arrow">↗</span>
+        </button>
+      </div>
+
+      <!-- Role Switcher Segment in Sidebar -->
+      <div class="sidebar-role-box">
+        <span class="sidebar-role-label">ACTIVE PORTAL</span>
+        <div class="sidebar-role-toggle">
+          <button class="sidebar-role-btn active" data-role="admin" id="btnRoleAdmin" title="Full Dispatcher & Executive Command">
+            <span>👑</span> Admin
+          </button>
+          <button class="sidebar-role-btn" data-role="staff" id="btnRoleStaff" title="Field Technician Work Orders">
+            <span>👷</span> Staff
+          </button>
+          <button class="sidebar-role-btn" data-role="customer" id="btnRoleCustomer" title="Customer Self-Service Tracker">
+            <span>👤</span> Customer
+          </button>
+        </div>
+
+        <!-- User Switcher Dropdown (Simulate accounts) -->
+        <div class="sidebar-account-row">
+          <label for="demoUserSelector" class="sidebar-account-label">Account:</label>
+          <select id="demoUserSelector" class="sidebar-user-select" title="Simulate specific user account">
+            <option value="admin@apexelite.demo">👑 Admin Dispatcher</option>
+            <option value="dave@apexelite.demo">👷 Dave Miller (Plumber)</option>
+            <option value="alex@apexelite.demo">👷 Alex Chen (HVAC)</option>
+            <option value="robert.k@gmail.com">👤 Robert King (Customer)</option>
+            <option value="sjenkins@gmail.com">👤 Sarah Jenkins (Customer)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Sidebar Navigation Menu Links -->
+      <nav class="sidebar-nav" id="sidebarNav">
+        <!-- Injected dynamically based on active role -->
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="sidebar-system-status">
+          <span class="status-indicator live">●</span>
+          <span>CRM & Dispatch Online</span>
+        </div>
+        <div class="sidebar-footer-actions">
+          <button id="btnOpenSettings" class="sidebar-footer-btn" title="Slack & Cal.com Integrations">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Settings
+          </button>
+          <button id="btnResetDemoBaseline" class="sidebar-footer-btn" title="Restore clean demo baseline across all 3 roles">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M8 16H3v5"/>
+            </svg>
+            Reset
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==========================================================================
+         MAIN CONTENT AREA (Right of Sidebar)
+         ========================================================================== -->
+    <div class="app-main-panel">
+
+      <!-- Top Application Header Bar -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <div class="breadcrumb-trail">
+            <span class="breadcrumb-root" id="topbarRootLabel">👑 Admin Command Center</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-active" id="topbarActiveViewLabel">Leads & Work Orders</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Active User Session Chip -->
+          <div class="active-session-chip" id="activeSessionChip" title="Active authentication session">
+            <span class="chip-dot"></span>
+            <span id="sessionUserDisplay">👑 Admin Dispatcher</span>
+          </div>
+          
+          <button id="btnTopbarToLanding" class="btn btn-secondary btn-sm" title="View Customer Public Fast Booking Landing Page">
+            <span>🌐</span> Public Landing Page
+          </button>
+
+          <button id="btnRunFollowup" class="btn btn-secondary btn-sm" title="Scan unbooked leads and fire follow-up timers">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Follow-up Check
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Scrollable Content Body -->
+      <main class="content-scroll-body">
+
+        <!-- ======================================================================
+             VIEW 1: LEADS & WORK ORDERS (With 4 Stats Boxes Directly Above Table)
+             ====================================================================== -->
+        <section class="content-view active" id="viewLeads">
+          <!-- 4 KPI Metrics HUD -->
+          <div class="kpi-hud-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon-box">📞</div>
+              <div class="kpi-content" style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <span class="kpi-label">Total Leads</span>
+                  <span class="badge badge-subtle">All Channels</span>
+                </div>
+                <span class="kpi-value" id="kpiTotalLeads">0</span>
+                <span class="kpi-subtext">AI Voice, Chat & Intake</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box">📅</div>
+              <div class="kpi-content" style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <span class="kpi-label">Auto-Booking Rate</span>
+                  <span class="badge badge-success-subtle">Real-Time</span>
+                </div>
+                <span class="kpi-value" id="kpiBookingRate">0%</span>
+                <span class="kpi-subtext" id="kpiBookedCount">0 appointments confirmed</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box">⚡</div>
+              <div class="kpi-content" style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <span class="kpi-label">AI Processing Speed</span>
+                  <span class="badge badge-info-subtle">Gemini Flash</span>
+                </div>
+                <span class="kpi-value" id="kpiAvgLatency">180ms</span>
+                <span class="kpi-subtext">Dynamic Catalog Prompting</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box">🚨</div>
+              <div class="kpi-content" style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <span class="kpi-label">Needs Attention</span>
+                  <span class="badge badge-warning-subtle" id="kpiEscalationBadge">Safety SLA</span>
+                </div>
+                <span class="kpi-value" id="kpiEscalations">0</span>
+                <span class="kpi-subtext" id="kpiEscalationPercent">Human triage required</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Leads Table (Placed Directly Under 4 Stats Boxes) -->
+          <div class="card leads-section" id="leadsSection">
+            <div class="card-header">
+              <div class="card-title-group">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <h2 class="card-title" style="margin: 0;">Customer Leads & Work Orders (<span id="leadsCount">0</span>)</h2>
+                  <span class="badge badge-subtle">
+                    <span class="status-indicator live" style="font-size: 0.65rem; margin-right: 4px;">●</span> Enterprise Relational CRM
+                  </span>
+                </div>
+                <p class="card-desc">Comprehensive leads registry with AI source attribution, dispatcher reassignment, status overrides, and audit trails.</p>
+              </div>
+              <div class="card-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+                <button id="btnExportCsv" class="btn btn-secondary btn-sm" title="Download all leads as CSV spreadsheet">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  Export CSV
+                </button>
+              </div>
+            </div>
+
+            <!-- Table Search & Filter Bar -->
+            <div class="table-controls-bar">
+              <div class="search-input-wrapper">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by customer name, phone, address, or trade issue..." />
+              </div>
+
+              <div class="filter-pills" id="statusFilters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn filter-btn-attention" data-filter="Needs Attention" id="btnFilterNeedsAttention">
+                  🚨 Needs Attention (<span id="filterAttentionCount">0</span>)
+                </button>
+                <button class="filter-btn" data-filter="Booked">Booked</button>
+                <button class="filter-btn" data-filter="In Progress">In Progress</button>
+                <button class="filter-btn" data-filter="Awaiting Response">Awaiting</button>
+                <button class="filter-btn" data-filter="Completed">Completed</button>
+                <button class="filter-btn" data-filter="Closed">Closed</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table" id="leadsTable">
+                <thead>
+                  <tr>
+                    <th>Lead ID / Source</th>
+                    <th>Customer</th>
+                    <th>Phone & Location</th>
+                    <th>Job & Urgency</th>
+                    <th>Status Override</th>
+                    <th>Booked Slot</th>
+                    <th>Assigned Tech</th>
+                    <th>Internal / Customer Notes</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="leadsTableBody">
+                  <tr>
+                    <td colspan="9" class="empty-state">Loading leads from enterprise CRM...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 2: FIELD TEAM ROSTER (Executive Fleet & Staff Management)
+             ====================================================================== -->
+        <section class="content-view" id="viewTeam" style="display: none;">
+          <!-- 4 KPI Metrics HUD for Team Operations -->
+          <div class="kpi-hud-grid" style="margin-bottom: 0.25rem;">
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background: #f0fdf4; color: #166534; border-color: #bbf7d0;">👷</div>
+              <div class="kpi-content" style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <span class="kpi-label">Field Technicians</span>
+                  <span class="badge badge-success-subtle">Certified</span>
+                </div>
+                <span class="kpi-value" id="kpiTeamTechCount">4</span>
+                <span class="kpi-subtext">Plumbing, HVAC, Boiler, Drain</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background: #faf5ff; color: #7c3aed; border-color: #e9d5ff;">👑</div>
+              <div class="kpi-content" style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <span class="kpi-label">Dispatch & Admins</span>
+                  <span class="badge badge-subtle">HQ Control</span>
+                </div>
+                <span class="kpi-value" id="kpiTeamAdminCount">1</span>
+                <span class="kpi-subtext">Lead Operations Dispatcher</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe;">🚐</div>
+              <div class="kpi-content" style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <span class="kpi-label">Fleet On Dispatch</span>
+                  <span class="badge badge-info-subtle">Real-Time</span>
+                </div>
+                <span class="kpi-value" id="kpiTeamOnJobCount">0</span>
+                <span class="kpi-subtext" id="kpiTeamOnJobSubtext">Active work orders in progress</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon-box" style="background: #fffbeb; color: #b45309; border-color: #fde68a;">⚡</div>
+              <div class="kpi-content" style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                  <span class="kpi-label">Ready Capacity</span>
+                  <span class="badge badge-warning-subtle">Available</span>
+                </div>
+                <span class="kpi-value" id="kpiTeamAvailableCount">0</span>
+                <span class="kpi-subtext">Standing by for emergency calls</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header" style="flex-wrap: wrap; gap: 1rem;">
+              <div class="card-title-group">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <h2 class="card-title" style="margin: 0;">Field Team & Staff Management (<span id="teamCount">0</span>)</h2>
+                  <span class="badge badge-subtle">
+                    <span class="status-indicator live" style="font-size: 0.65rem; margin-right: 4px;">●</span> GPS Fleet Active
+                  </span>
+                </div>
+                <p class="card-desc">Oversee certified technicians & dispatch staff, review real-time work orders, verify leave schedules, and onboard new fleet members.</p>
+              </div>
+              <div class="card-actions" style="display: flex; gap: 0.75rem; align-items: center;">
+                <button id="btnAddStaffMember" class="btn btn-primary btn-sm" title="Add new staff or admin user">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px;">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  Add Team Member
+                </button>
+              </div>
+            </div>
+
+            <!-- Role Tabs & Search Bar -->
+            <div class="table-controls-bar" style="flex-wrap: wrap; gap: 0.85rem; margin-bottom: 1.35rem;">
+              <div class="search-input-wrapper" style="max-width: 420px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="teamSearchInput" class="search-input" placeholder="Search by name, trade specialty, van #, or email..." />
+              </div>
+
+              <div class="filter-pills" id="teamRoleFilters">
+                <button class="filter-btn active" data-team-filter="technicians" id="btnTeamFilterTech">
+                  👷 Field Technicians (<span id="tabTechCount">4</span>)
+                </button>
+                <button class="filter-btn" data-team-filter="admins" id="btnTeamFilterAdmin">
+                  👑 Dispatch & Admins (<span id="tabAdminCount">1</span>)
+                </button>
+                <button class="filter-btn" data-team-filter="all_staff" id="btnTeamFilterAllStaff">
+                  👥 All Operations Staff (<span id="tabAllStaffCount">5</span>)
+                </button>
+                <button class="filter-btn" data-team-filter="customers" id="btnTeamFilterCustomers">
+                  👤 Customer Accounts (<span id="tabCustomerCount">2</span>)
+                </button>
+              </div>
+            </div>
+
+            <!-- Grid of Modern Staff Cards -->
+            <div class="staff-team-grid" id="staffRosterGrid">
+              <!-- Dynamically populated by renderStaffRoster -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 3: SERVICES CATALOG MANAGEMENT (Dynamic Prompting)
+             ====================================================================== -->
+        <section class="content-view" id="viewServices" style="display: none;">
+          <div class="card">
+            <div class="card-header" style="flex-wrap: wrap; gap: 1rem;">
+              <div class="card-title-group">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <h2 class="card-title" style="margin: 0;">Services Offered Catalog (<span id="servicesCount">0</span>)</h2>
+                  <span class="badge badge-info-subtle">
+                    ⚡ Live Services
+                  </span>
+                </div>
+                <p class="card-desc">Single source of truth driving services qualification and customer offerings. Toggle or add services here to dynamically update what is offered on incoming calls and bookings without redeploying code.</p>
+              </div>
+              <div class="card-actions">
+                <button id="btnOpenAddServiceModal" class="btn btn-primary btn-sm">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px;">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  Add New Service
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table" id="servicesTable">
+                <thead>
+                  <tr>
+                    <th>Service Name</th>
+                    <th>Description & Scope</th>
+                    <th>Status</th>
+                    <th>Created By</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="servicesTableBody">
+                  <!-- Populated from /api/services -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 4: STAFF LEAVE REQUESTS (Admin Approval)
+             ====================================================================== -->
+        <section class="content-view" id="viewLeave" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <h2 class="card-title" style="margin: 0;">Staff Leave & Time Off Requests (<span id="leaveRequestsCount">0</span>)</h2>
+                  <span class="badge badge-subtle">Coverage Management</span>
+                </div>
+                <p class="card-desc">Review and approve technician vacation, certification seminars, or emergency sick leave. Approvals update dispatch availability.</p>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table" id="adminLeaveTable">
+                <thead>
+                  <tr>
+                    <th>Request ID</th>
+                    <th>Staff Member</th>
+                    <th>Dates Requested</th>
+                    <th>Reason / Notes</th>
+                    <th>Status</th>
+                    <th>Requested At</th>
+                    <th>Admin Action</th>
+                  </tr>
+                </thead>
+                <tbody id="adminLeaveTableBody">
+                  <!-- Populated from /api/leave -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 5: ACTIVITY & AUDIT LOGS
+             ====================================================================== -->
+        <section class="content-view" id="viewAudit" style="display: none;">
+          <div class="bottom-grid" id="auditSection">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3 class="card-title">Live Notification Feed</h3>
+                  <p class="card-desc">Outbound SMS, WhatsApp, and Slack dispatch log.</p>
+                </div>
+                <span class="badge badge-subtle" id="notificationCount">0 sent</span>
+              </div>
+              <div class="notifications-scroll" id="notificationsFeed">
+                <div class="empty-state small">No notifications dispatched yet.</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3 class="card-title">System Audit & Observability Log</h3>
+                  <p class="card-desc">Trace every step, transition, and outcome for total transparency.</p>
+                </div>
+                <span class="badge badge-subtle" id="logsCount">0 events</span>
+              </div>
+              <div class="logs-scroll">
+                <table class="data-table small-table" id="logsTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>Lead</th>
+                      <th>Step</th>
+                      <th>Outcome</th>
+                    </tr>
+                  </thead>
+                  <tbody id="logsTableBody">
+                    <tr><td colspan="4" class="empty-state small">No execution logs recorded.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 6: INBOUND VOICE & CALL INTAKE (Agent Riley & Scenarios) — ADMIN ONLY
+             ====================================================================== -->
+        <section class="content-view" id="viewVoice" style="display: none;">
+          <div class="card simulator-section voice-engine-pro-card" id="callProcessSection">
+            
+            <div class="card-header voice-engine-header">
+              <div class="card-title-group">
+                <div class="voice-engine-badge-row">
+                  <span class="voice-portal-tag">👑 Admin Voice Control Center</span>
+                  <span class="badge badge-success-subtle">
+                    <span class="status-indicator live" style="font-size: 0.65rem; margin-right: 4px;">●</span> Voice AI Ready
+                  </span>
+                  <span class="badge badge-subtle">⚡ Gemini 3.5 Live Flash</span>
+                </div>
+                <h2 class="card-title" style="font-size: 1.35rem; margin-top: 0.35rem;">Inbound Voice & Autonomous Call Intake Engine</h2>
+                <p class="card-desc">Continuous real-time voice receptionist with bidirectional microphone streaming, dynamic Services Catalog lead qualification, and instant technician dispatch.</p>
+              </div>
+            </div>
+
+            <!-- Live Voice Call Module (High-Tech Audio Console) -->
+            <div class="live-voice-call-card-pro" id="liveVoiceCallCard">
+              <div class="voice-card-left">
+                <div class="voice-avatar-pulse-pro">
+                  <div class="voice-pulse-ring"></div>
+                  <div class="voice-icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                      <line x1="12" y1="19" x2="12" y2="23"/>
+                      <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="voice-card-info">
+                  <div class="voice-card-title-row">
+                    <span class="voice-hero-title">Live Voice Call with Agent Riley</span>
+                    <span class="badge badge-info-subtle">Gemini 3.5 Live</span>
+                    <span class="badge badge-subtle" style="font-size: 0.68rem;">~380ms Audio</span>
+                  </div>
+                  <div class="voice-card-subtitle">
+                    Speak directly into your microphone. Riley conducts a natural spoken phone conversation, cross-references Springfield services, quotes flat diagnostic rates, and triggers field dispatch.
+                  </div>
+                  <div class="voice-meta-tags">
+                    <span class="voice-meta-pill">🎙️ Bidirectional Audio</span>
+                    <span class="voice-meta-pill">📋 Live Catalog Sync</span>
+                    <span class="voice-meta-pill">📱 Instant Van SMS Alert</span>
+                    <span class="voice-meta-pill">🛡️ Human Escalation Loop</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="voice-card-right">
+                <button id="btnStartVoiceCall" class="btn btn-voice-call-pro">
+                  <span class="btn-call-wave-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                  </span>
+                  <span>Start Live Voice Call</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Active Voice Call Floating Interface -->
+            <div class="active-call-modal-pro" id="activeCallModal" style="display: none;">
+              <div class="call-top-bar">
+                <div class="call-status-indicator">
+                  <span class="call-pulse-dot"></span>
+                  <span id="callStatusText">Call Connected with Riley (00:00)</span>
+                </div>
+                <button id="btnEndVoiceCall" class="btn btn-hangup-pro">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.996.996 0 0 1 0-1.41C3.42 8.54 7.49 6.75 12 6.75s8.58 1.79 11.71 4.92c.39.39.39 1.02 0 1.41l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28-.79-.74-1.69-1.36-2.67-1.85-.33-.16-.56-.5-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/>
+                  </svg>
+                  <span>End Call & Ingest Work Order</span>
+                </button>
+              </div>
+              
+              <div class="call-waveform-area" id="callWaveformArea">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+              </div>
+
+              <div class="call-transcript-log" id="callTranscriptLog"></div>
+
+              <div class="call-input-fallback">
+                <input type="text" id="liveSpeechInput" placeholder="Speak into mic, or type message here and press Enter..." />
+                <button id="btnSendLiveReply" class="btn btn-primary btn-xs">Send</button>
+              </div>
+            </div>
+
+            <!-- Scenarios Header -->
+            <div class="scenarios-section-header">
+              <div>
+                <span class="scenarios-section-kicker">1-CLICK CALL SCENARIO SUITE</span>
+                <h3 class="scenarios-section-title">Select a 1-Click Intake Scenario</h3>
+              </div>
+              <span class="scenarios-sub-hint">Instant simulation without speaking into microphone</span>
+            </div>
+
+            <!-- Quick Scenarios Grid (3x2 Beautiful Responsive Cards) -->
+            <div class="scenarios-grid-pro">
+              
+              <!-- 1. Burst Pipe Emergency -->
+              <button class="scenario-btn scenario-card-pro" data-scenario="burst_pipe" id="scenarioBurstPipe">
+                <div class="sc-card-top">
+                  <div class="sc-icon-pill sc-water">🌊</div>
+                  <span class="sc-badge badge-danger">🚨 Rapid Dispatch</span>
+                </div>
+                <div class="sc-card-body">
+                  <strong class="sc-title">Burst Pipe Emergency</strong>
+                  <p class="sc-desc">Basement flooding triage, master plumber auto-assignment, and immediate GPS fleet dispatch.</p>
+                </div>
+                <div class="sc-card-footer">
+                  <span class="sc-flow-tag">Flow: Emergency Dispatch</span>
+                  <span class="sc-action-arrow">Simulate →</span>
+                </div>
+              </button>
+
+              <!-- 2. AC Failure / HVAC Repair -->
+              <button class="scenario-btn scenario-card-pro" data-scenario="hvac_repair" id="scenarioHvac">
+                <div class="sc-card-top">
+                  <div class="sc-icon-pill sc-hvac">❄️</div>
+                  <span class="sc-badge badge-info-subtle">📅 Cal.com Booked</span>
+                </div>
+                <div class="sc-card-body">
+                  <strong class="sc-title">AC Failure / HVAC Repair</strong>
+                  <p class="sc-desc">Compressor failure qualification, Cal.com slot booking, and EPA master tech scheduling.</p>
+                </div>
+                <div class="sc-card-footer">
+                  <span class="sc-flow-tag">Flow: Scheduled Service</span>
+                  <span class="sc-action-arrow">Simulate →</span>
+                </div>
+              </button>
+
+              <!-- 3. Water Heater Inquiry -->
+              <button class="scenario-btn scenario-card-pro" data-scenario="unbooked_quote" id="scenarioQuote">
+                <div class="sc-card-top">
+                  <div class="sc-icon-pill sc-quote">⏳</div>
+                  <span class="sc-badge badge-warning-subtle">⏱️ 2h SMS Follow-up</span>
+                </div>
+                <div class="sc-card-body">
+                  <strong class="sc-title">Water Heater Inquiry</strong>
+                  <p class="sc-desc">Ballpark quote inquiry, unbooked lead capture, and automated 2-hour SMS follow-up timer.</p>
+                </div>
+                <div class="sc-card-footer">
+                  <span class="sc-flow-tag">Flow: Lead Follow-up</span>
+                  <span class="sc-action-arrow">Simulate →</span>
+                </div>
+              </button>
+
+              <!-- 4. Ask for Human -->
+              <button class="scenario-btn scenario-card-pro" data-scenario="ask_human" id="scenarioAskHuman">
+                <div class="sc-card-top">
+                  <div class="sc-icon-pill sc-human">👤</div>
+                  <span class="sc-badge badge-accent-subtle">⚠️ Escalation</span>
+                </div>
+                <div class="sc-card-body">
+                  <strong class="sc-title">Ask for Human</strong>
+                  <p class="sc-desc">Commercial boiler query, safe immediate transfer to human dispatcher, and Slack alert.</p>
+                </div>
+                <div class="sc-card-footer">
+                  <span class="sc-flow-tag">Flow: Human Handoff</span>
+                  <span class="sc-action-arrow">Simulate →</span>
+                </div>
+              </button>
+
+              <!-- 5. Garbled Audio -->
+              <button class="scenario-btn scenario-card-pro" data-scenario="garbled_audio" id="scenarioGarbled">
+                <div class="sc-card-top">
+                  <div class="sc-icon-pill sc-garbled">❓</div>
+                  <span class="sc-badge badge-subtle">🛡️ Low Confidence</span>
+                </div>
+                <div class="sc-card-body">
+                  <strong class="sc-title">Garbled Audio / Static</strong>
+                  <p class="sc-desc">Simulates noisy line or low-confidence speech; triggers polite clarification loop.</p>
+                </div>
+                <div class="sc-card-footer">
+                  <span class="sc-flow-tag">Flow: Clarification Loop</span>
+                  <span class="sc-action-arrow">Simulate →</span>
+                </div>
+              </button>
+
+              <!-- 6. Duplicate Caller -->
+              <button class="scenario-btn scenario-card-pro" data-scenario="duplicate_call" id="scenarioDuplicate">
+                <div class="sc-card-top">
+                  <div class="sc-icon-pill sc-duplicate">🔁</div>
+                  <span class="sc-badge badge-subtle">⚡ Smart Match</span>
+                </div>
+                <div class="sc-card-body">
+                  <strong class="sc-title">Duplicate Caller</strong>
+                  <p class="sc-desc">Recognizes existing order by phone number, prevents double-booking, and gives live ETA.</p>
+                </div>
+                <div class="sc-card-footer">
+                  <span class="sc-flow-tag">Flow: Deduplication</span>
+                  <span class="sc-action-arrow">Simulate →</span>
+                </div>
+              </button>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 7A: CUSTOMER PORTAL — ACTIVE SERVICE ORDER (Dedicated View)
+             ====================================================================== -->
+        <section class="content-view" id="viewCustomerOrder" style="display: none;">
+          <div class="portal-welcome-card">
+            <div class="welcome-text-block">
+              <div class="badge badge-subtle" style="margin-bottom: 0.5rem;">👤 Customer Service Portal</div>
+              <h1 class="portal-title">Hello, <span id="customerGreetingName">Michael Vance</span></h1>
+              <p class="portal-subtitle">Track your dispatch status in real-time, view verified master technician credentials, and monitor estimated van arrival.</p>
+            </div>
+            <div class="portal-header-action-group">
+              <button class="btn btn-primary btn-sm" onclick="switchView('customer-message')">
+                💬 Message Allocated Technician
+              </button>
+            </div>
+          </div>
+
+          <div class="customer-active-order-card" id="customerOrderContainer">
+            <!-- Rendered dynamically by renderCustomerOrderView -->
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 7B: CUSTOMER PORTAL — MESSAGE TECHNICIAN (Dedicated View)
+             ====================================================================== -->
+        <section class="content-view" id="viewCustomerMessage" style="display: none;">
+          <div class="portal-welcome-card">
+            <div class="welcome-text-block">
+              <div class="badge badge-info-subtle" style="margin-bottom: 0.5rem;">💬 Field Technician & Dispatch Communications</div>
+              <h1 class="portal-title">Direct Technician Messaging</h1>
+              <p class="portal-subtitle">Chat directly with your allocated technician, provide gate codes, parking directions, pet warnings, or submit appointment reschedule requests.</p>
+            </div>
+            <div class="portal-header-action-group">
+              <button class="btn btn-secondary btn-sm" onclick="switchView('customer-order')">
+                📋 View Order Details
+              </button>
+            </div>
+          </div>
+
+          <div class="customer-messaging-card" id="customerMessageContainer">
+            <!-- Rendered dynamically by renderCustomerMessageView -->
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 8: STAFF PORTAL — MY ASSIGNED JOBS (Dedicated View)
+             ====================================================================== -->
+        <section class="content-view" id="viewStaffOrders" style="display: none;">
+          <!-- Welcome & Dispatch KPI Header -->
+          <div class="portal-welcome-card">
+            <div class="welcome-text-block">
+              <div class="badge badge-success-subtle" style="margin-bottom: 0.5rem;">👷 Field Technician Dispatch Queue</div>
+              <h1 class="portal-title">Welcome, <span id="staffGreetingName">Dave Miller</span></h1>
+              <p class="portal-subtitle">Real-time service orders dispatched to your van. Update progress to trigger automated customer SMS alerts and log immutable audit trails.</p>
+            </div>
+            <div class="staff-kpi-pill-group">
+              <div class="staff-kpi-pill">
+                <span class="staff-kpi-num" id="staffJobsCount">0</span>
+                <span class="staff-kpi-lbl">Assigned Jobs</span>
+              </div>
+              <div class="staff-kpi-pill">
+                <span class="staff-kpi-num" id="staffInProgressCount">0</span>
+                <span class="staff-kpi-lbl">In Progress</span>
+              </div>
+              <div class="staff-kpi-pill">
+                <span class="staff-kpi-num" id="staffCompletedCount">0</span>
+                <span class="staff-kpi-lbl">Completed</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full-Width Work Orders Container -->
+          <div class="card">
+            <div class="card-header" style="flex-wrap: wrap; gap: 1rem;">
+              <div class="card-title-group">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <h2 class="card-title" style="margin: 0;">My Assigned Work Orders (<span id="staffWorkOrdersCount">0</span>)</h2>
+                  <span class="badge badge-subtle"><span class="status-indicator live" style="font-size: 0.65rem; margin-right: 4px;">●</span> GPS Sync Active</span>
+                </div>
+                <p class="card-desc">Only jobs dispatched specifically to you. Updating status automatically logs to the immutable audit trail and notifies the customer.</p>
+              </div>
+
+              <!-- Filter Pills for Staff Jobs -->
+              <div class="filter-pills" id="staffFilters">
+                <button class="filter-btn active" data-staff-filter="all" id="btnStaffFilterAll">All Jobs</button>
+                <button class="filter-btn" data-staff-filter="In Progress" id="btnStaffFilterInProgress">▶ In Progress</button>
+                <button class="filter-btn" data-staff-filter="Booked" id="btnStaffFilterBooked">📅 Scheduled</button>
+                <button class="filter-btn" data-staff-filter="Completed" id="btnStaffFilterCompleted">✔ Completed</button>
+              </div>
+            </div>
+
+            <!-- Search Bar for Staff Jobs -->
+            <div class="table-controls-bar" style="margin-bottom: 1.25rem;">
+              <div class="search-input-wrapper" style="max-width: 440px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="staffSearchInput" class="search-input" placeholder="Search my jobs by customer, address, or issue..." />
+              </div>
+            </div>
+
+            <!-- Work Orders List (Full width) -->
+            <div class="staff-orders-list" id="staffOrdersList">
+              <!-- Dynamically populated by renderStaffOrders -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 9: STAFF PORTAL — MY TIME OFF & AVAILABILITY (Dedicated View)
+             ====================================================================== -->
+        <section class="content-view" id="viewStaffLeave" style="display: none;">
+          <!-- Time Off Header & Balance Summary -->
+          <div class="portal-welcome-card">
+            <div class="welcome-text-block">
+              <div class="badge badge-warning-subtle" style="margin-bottom: 0.5rem;">🏖️ Schedule & Availability Management</div>
+              <h1 class="portal-title">Time Off & Leave Requests</h1>
+              <p class="portal-subtitle">Submit planned vacation, personal time off, medical leave, or trade certification seminars for dispatcher review. Approved requests automatically block your Cal.com booking availability.</p>
+            </div>
+            <div class="staff-kpi-pill-group">
+              <div class="staff-kpi-pill">
+                <span class="staff-kpi-num" id="staffPendingLeaveCount">0</span>
+                <span class="staff-kpi-lbl">Pending Review</span>
+              </div>
+              <div class="staff-kpi-pill">
+                <span class="staff-kpi-num" id="staffApprovedLeaveCount">0</span>
+                <span class="staff-kpi-lbl">Approved Leaves</span>
+              </div>
+              <div class="staff-kpi-pill">
+                <span class="staff-kpi-num" id="staffTotalLeaveDays">0</span>
+                <span class="staff-kpi-lbl">Days Scheduled</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Structured Two-Column Leave Layout -->
+          <div class="staff-leave-view-grid">
+            <!-- Left Card: Submit Time Off Form -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3 class="card-title" style="margin: 0;">🏖️ Submit Time Off Request</h3>
+                  <p class="card-desc">Notify dispatch at least 48 hours in advance when possible.</p>
+                </div>
+              </div>
+              <form id="staffLeaveForm" onsubmit="event.preventDefault(); submitStaffLeaveRequest();">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 0.85rem;">
+                  <div>
+                    <label class="form-label" style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">Start Date *</label>
+                    <input type="date" id="staffLeaveStart" class="form-input" required />
+                  </div>
+                  <div>
+                    <label class="form-label" style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">End Date *</label>
+                    <input type="date" id="staffLeaveEnd" class="form-input" required />
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 0.85rem;">
+                  <label class="form-label" style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">Leave Category *</label>
+                  <select id="staffLeaveType" class="form-input" style="cursor: pointer;">
+                    <option value="Vacation / PTO">🌴 Vacation / Planned PTO</option>
+                    <option value="Certification / Training">📜 Trade Certification & Training Seminar</option>
+                    <option value="Medical / Sick Leave">🩺 Medical / Sick Leave</option>
+                    <option value="Family / Personal Emergency">🚨 Family / Personal Emergency</option>
+                  </select>
+                </div>
+
+                <div style="margin-bottom: 1.15rem;">
+                  <label class="form-label" style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">Reason & Details *</label>
+                  <textarea id="staffLeaveReason" class="form-input" rows="3" placeholder="Provide context for dispatch (e.g. Annual HVAC EPA 608 renewal seminar)..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                  Submit Request to Dispatch
+                </button>
+              </form>
+            </div>
+
+            <!-- Right Card: My Leave History Table -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <div style="display: flex; align-items: center; gap: 0.65rem;">
+                    <h3 class="card-title" style="margin: 0;">My Leave History & Status</h3>
+                    <span class="badge badge-subtle" id="staffLeaveHistoryCount">0 records</span>
+                  </div>
+                  <p class="card-desc">Track dispatcher reviews, approval notes, and coverage assignments.</p>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table" id="staffMyLeaveTable">
+                  <thead>
+                    <tr>
+                      <th>Dates Requested</th>
+                      <th>Reason / Details</th>
+                      <th>Status</th>
+                      <th>Dispatcher Notes</th>
+                      <th>Submitted</th>
+                    </tr>
+                  </thead>
+                  <tbody id="staffMyLeaveTableBody">
+                    <!-- Populated from /api/leave (staff scoped) -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ============================================================================
+       MODALS
+       ============================================================================ -->
+
+  <!-- Status Audit Trail Modal -->
+  <div class="modal-backdrop" id="statusLogModalBackdrop" style="display: none;">
+    <div class="modal-box" style="max-width: 600px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="statusLogModalTitle" style="margin: 0; font-size: 1.1rem;">Status Audit Trail</h3>
+          <span class="card-desc" id="statusLogModalSubtitle">Immutable lifecycle transitions for lead</span>
+        </div>
+        <button class="modal-close" id="statusLogModalClose">&times;</button>
+      </div>
+      <div class="modal-body" style="padding-top: 0.75rem;">
+        <div class="timeline-container" id="statusLogTimeline"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Team Member Modal -->
+  <div class="modal-backdrop" id="addTechModalBackdrop" style="display: none;">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 id="addTechModalTitle">Add Staff or Team Member</h3>
+        <button class="modal-close" id="addTechModalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="addTechForm" onsubmit="event.preventDefault(); submitAddTeamMember();">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+            <div>
+              <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Full Name *</label>
+              <input type="text" id="techInputName" class="form-input" placeholder="e.g. Jordan Vance" required />
+            </div>
+            <div>
+              <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Role *</label>
+              <select id="userInputRole" class="form-input">
+                <option value="staff">Staff Technician</option>
+                <option value="admin">Admin Dispatcher</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+            <div>
+              <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Email Address *</label>
+              <input type="email" id="techInputEmail" class="form-input" placeholder="e.g. jordan@apexelite.com" required />
+            </div>
+            <div>
+              <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Phone Number</label>
+              <input type="text" id="techInputPhone" class="form-input" placeholder="+1 (555) 019-8804" />
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+            <div>
+              <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Trade Specialty</label>
+              <select id="techInputTrade" class="form-input">
+                <option value="Plumbing & Water Heaters">Plumbing & Water Heaters</option>
+                <option value="HVAC & Heat Pumps">HVAC & Heat Pumps</option>
+                <option value="Commercial Boiler & Steam">Commercial Boiler & Steam</option>
+                <option value="Drain Cleaning & Rooter">Drain Cleaning & Rooter</option>
+                <option value="Electrical & Diagnostics">Electrical & Diagnostics</option>
+                <option value="Operations & Dispatch">Operations & Dispatch</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Assigned Van / Unit</label>
+              <input type="text" id="techInputVan" class="form-input" placeholder="e.g. Fleet Van #05" />
+            </div>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem;">
+            <button type="button" class="btn btn-secondary" id="btnCancelAddTech">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btnSaveTech">Save Team Member</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Service Modal -->
+  <div class="modal-backdrop" id="addServiceModalBackdrop" style="display: none;">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Add Service to Catalog</h3>
+        <button class="modal-close" id="addServiceModalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="addServiceForm" onsubmit="event.preventDefault(); submitAddService();">
+          <div style="margin-bottom: 0.85rem;">
+            <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Service Name *</label>
+            <input type="text" id="serviceInputName" class="form-input" placeholder="e.g. Tankless Heat Pump Water Heater Retrofit" required />
+          </div>
+          <div style="margin-bottom: 0.85rem;">
+            <label class="form-label" style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Description & Scope *</label>
+            <textarea id="serviceInputDesc" class="form-input" rows="3" placeholder="Explain what the service covers, key qualifying questions, and turnaround time." required></textarea>
+          </div>
+          <div style="margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" id="serviceInputActive" checked style="width: 16px; height: 16px;" />
+            <label for="serviceInputActive" style="font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+              Active in Services Catalog
+            </label>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button type="button" class="btn btn-secondary" id="btnCancelAddService">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create Service</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slack & Cal.com Settings Modal -->
+  <div class="modal-backdrop" id="settingsModalBackdrop" style="display: none;">
+    <div class="modal-box" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 id="settingsModalTitle">Integration Adjustments (Slack & Cal.com)</h3>
+        <button class="modal-close" id="settingsModalClose">&times;</button>
+      </div>
+      <div class="modal-body" style="padding-top: 0.5rem;">
+        <form id="settingsForm" onsubmit="event.preventDefault(); submitSaveSettings();">
+          <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <div style="font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                <span>💬</span> Slack Alerting & Channel Routing
+              </div>
+              <span class="badge" id="settingsSlackStatusBadge" style="font-size: 0.7rem;">Checking...</span>
+            </div>
+            <div style="margin-bottom: 0.65rem;">
+              <label class="form-label" style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 3px;">Slack Incoming Webhook URL</label>
+              <input type="url" id="settingSlackWebhook" class="form-input" placeholder="https://hooks.slack.com/services/T.../B.../..." />
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: flex-end;">
+              <div>
+                <label class="form-label" style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 3px;">Contractor Dispatch Channel</label>
+                <select id="settingNotifyChannel" class="form-input" style="font-size: 0.8rem;">
+                  <option value="slack">Slack Channel (Instant Push)</option>
+                  <option value="sms">SMS Direct to Phone</option>
+                  <option value="email">Email Notification</option>
+                </select>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnTestSlackPing" style="white-space: nowrap;">
+                🔔 Test Slack Ping
+              </button>
+            </div>
+          </div>
+
+          <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <div style="font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                <span>📅</span> Cal.com Calendar & Trade Windows
+              </div>
+              <span class="badge" id="settingsCalStatusBadge" style="font-size: 0.7rem;">Checking...</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.65rem;">
+              <div>
+                <label class="form-label" style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 3px;">Cal.com API Key</label>
+                <input type="password" id="settingCalApiKey" class="form-input" placeholder="cal_live_..." />
+              </div>
+              <div>
+                <label class="form-label" style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 3px;">Event Type ID</label>
+                <input type="text" id="settingCalEventTypeId" class="form-input" placeholder="e.g. 123456" />
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Trade Windows: 9am, 11am, 1pm, 3pm</span>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnTestCalcomSlots">
+                📅 Test Availability
+              </button>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button type="button" class="btn btn-secondary" id="btnCancelSettings">Close</button>
+            <button type="submit" class="btn btn-primary" id="btnSaveSettings">Save Adjustments</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  <!-- ==========================================================================
+       MODAL 1: BOOKING CONFIRMATION & MAGIC TRACKING (No Account Needed)
+       ========================================================================== -->
+  <div class="modal-backdrop" id="bookingSuccessModal" style="display: none;">
+    <div class="modal-card booking-success-card">
+      <div class="booking-success-header">
+        <div class="success-icon-badge">🎉</div>
+        <h2 class="modal-title">Service Booking Confirmed!</h2>
+        <p class="modal-subtitle">Your appointment has been logged in our dispatch engine. No account or password is required to track your technician.</p>
+      </div>
+
+      <div class="tracking-code-highlight-box">
+        <div class="tracking-code-label">YOUR TRACKING ID</div>
+        <div class="tracking-code-val-row">
+          <span class="tracking-code-text" id="bookingSuccessTrackingCode">LD-8041-PL</span>
+          <button class="btn btn-secondary btn-xs" id="btnCopyTrackingCode" title="Copy tracking code">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <div class="booking-summary-grid">
+        <div class="summary-item">
+          <span class="summary-label">Assigned Technician:</span>
+          <span class="summary-val" id="bookingSuccessTech">Dave M. (Master Plumber)</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Estimated Arrival:</span>
+          <span class="summary-val" id="bookingSuccessArrival">Within 45 to 60 minutes</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Service Trade:</span>
+          <span class="summary-val" id="bookingSuccessService">Burst Pipe Emergency</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Contact Phone:</span>
+          <span class="summary-val" id="bookingSuccessPhone">+1 (555) 234-9876</span>
+        </div>
+      </div>
+
+      <div class="booking-success-actions">
+        <button class="btn btn-primary" id="btnTrackJobLiveMagic" style="flex: 1;">
+          <span>📍</span> Track Your Job Live (No Password Needed)
+        </button>
+        <button class="btn btn-secondary" id="btnCloseBookingSuccess">
+          Return to Home
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL 2: PUBLIC ORDER TRACKING LOOKUP (Zero Login)
+       ========================================================================== -->
+  <div class="modal-backdrop" id="publicTrackModal" style="display: none;">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 class="modal-title">Track Existing Service Order</h2>
+          <p class="modal-subtitle">Enter your Tracking ID or Phone Number to view live dispatch status.</p>
+        </div>
+        <button class="btn-close-modal" id="btnClosePublicTrackModal">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 1.25rem 0;">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem;">
+          <input type="text" id="modalTrackInput" class="form-input" placeholder="Enter Tracking ID (e.g. LD-8041-PL) or Phone..." style="flex: 1;" />
+          <button class="btn btn-primary" id="btnModalTrack">
+            <span>🔍</span> Track
+          </button>
+        </div>
+
+        <div id="modalTrackResult" style="display: none;">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js?v=9"></script>
+</body>
+</html>

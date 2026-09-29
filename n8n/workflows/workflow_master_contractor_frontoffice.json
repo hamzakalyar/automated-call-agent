@@ -1,0 +1,77 @@
+{
+  "name": "Workflow Master — Contractor Front Office Orchestrator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "vapi-voice-intake",
+        "options": {}
+      },
+      "name": "Vapi Inbound Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "workflowId": "workflow_a_intake_qualify"
+      },
+      "name": "Call Workflow A: Intake & Qualify",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [360, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.lead.Status }}",
+              "operation": "notEqual",
+              "value2": "Escalated to Human"
+            }
+          ]
+        }
+      },
+      "name": "Is Qualified for Booking?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [620, 300]
+    },
+    {
+      "parameters": {
+        "workflowId": "workflow_b_schedule"
+      },
+      "name": "Call Workflow B: Schedule",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [880, 200]
+    },
+    {
+      "parameters": {
+        "workflowId": "workflow_c_notify"
+      },
+      "name": "Call Workflow C: Notify",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Vapi Inbound Webhook": {
+      "main": [[{ "node": "Call Workflow A: Intake & Qualify", "type": "main", "index": 0 }]]
+    },
+    "Call Workflow A: Intake & Qualify": {
+      "main": [[{ "node": "Is Qualified for Booking?", "type": "main", "index": 0 }]]
+    },
+    "Is Qualified for Booking?": {
+      "main": [
+        [{ "node": "Call Workflow B: Schedule", "type": "main", "index": 0 }],
+        [{ "node": "Call Workflow C: Notify", "type": "main", "index": 0 }]
+      ]
+    },
+    "Call Workflow B: Schedule": {
+      "main": [[{ "node": "Call Workflow C: Notify", "type": "main", "index": 0 }]]
+    }
+  }
+}

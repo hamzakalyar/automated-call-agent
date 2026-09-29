@@ -1,0 +1,128 @@
+{
+  "name": "Workflow A — Intake & Qualify",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "contractor-intake",
+        "options": {}
+      },
+      "name": "Webhook Inbound Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "BUSINESS_NAME", "value": "={{ $env.BUSINESS_NAME || 'Apex Elite Plumbing' }}" },
+            { "name": "TRADE_TYPE", "value": "={{ $env.TRADE_TYPE || 'Plumbing & HVAC' }}" },
+            { "name": "ANTHROPIC_API_KEY", "value": "={{ $env.ANTHROPIC_API_KEY }}" },
+            { "name": "AIRTABLE_BASE_ID", "value": "={{ $env.AIRTABLE_BASE_ID }}" },
+            { "name": "AIRTABLE_LEADS_TABLE", "value": "={{ $env.AIRTABLE_LEADS_TABLE || 'Leads' }}" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Config & Environment Loader",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $node['Config & Environment Loader'].json.ANTHROPIC_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\n  \"model\": \"claude-3-5-sonnet-20241022\",\n  \"max_tokens\": 1024,\n  \"temperature\": 0,\n  \"system\": \"You are a strict data extraction assistant for \" + $node['Config & Environment Loader'].json.BUSINESS_NAME + \". Return ONLY a valid JSON object matching: { name, phone, location, job_type, urgency, description, photo_links, preferred_slot, needs_human, reason_if_needs_human }.\",\n  \"messages\": [\n    { \"role\": \"user\", \"content\": \"Extract lead details: \" + ($json.body.transcript || $json.body.message || JSON.stringify($json.body)) }\n  ]\n}"
+      },
+      "name": "Claude Structured Extraction",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ JSON.parse($json.content[0].text.replace(/```json/g, '').replace(/```/g, '').trim()).needs_human }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Check Human Escalation",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [740, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.airtable.com/v0/" + $node['Config & Environment Loader'].json.AIRTABLE_BASE_ID + "/" + $node['Config & Environment Loader'].json.AIRTABLE_LEADS_TABLE,
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ 'Bearer ' + $env.AIRTABLE_ACCESS_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\n  \"fields\": {\n    \"LeadID\": \"LD-\" + $now.format('X'),\n    \"Name\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).name || 'Unknown',\n    \"Phone\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).phone || '',\n    \"Location\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).location || '',\n    \"JobType\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).job_type || 'General',\n    \"Urgency\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).urgency || 'High',\n    \"Description\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).description || '',\n    \"Status\": \"Escalated to Human\",\n    \"NextAction\": \"Urgent contractor callback: \" + (JSON.parse($node['Claude Structured Extraction'].json.content[0].text).reason_if_needs_human || 'Explicit ask')\n  }\n}"
+      },
+      "name": "Airtable Write: Escalated",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [980, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.airtable.com/v0/" + $node['Config & Environment Loader'].json.AIRTABLE_BASE_ID + "/" + $node['Config & Environment Loader'].json.AIRTABLE_LEADS_TABLE,
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ 'Bearer ' + $env.AIRTABLE_ACCESS_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\n  \"fields\": {\n    \"LeadID\": \"LD-\" + $now.format('X'),\n    \"Name\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).name,\n    \"Phone\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).phone,\n    \"Location\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).location,\n    \"JobType\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).job_type,\n    \"Urgency\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).urgency,\n    \"Description\": JSON.parse($node['Claude Structured Extraction'].json.content[0].text).description,\n    \"Status\": \"Qualified\",\n    \"NextAction\": \"Proceed to Calendar Scheduling\"\n  }\n}"
+      },
+      "name": "Airtable Write: Qualified",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [980, 420]
+    }
+  ],
+  "connections": {
+    "Webhook Inbound Trigger": {
+      "main": [[{ "node": "Config & Environment Loader", "type": "main", "index": 0 }]]
+    },
+    "Config & Environment Loader": {
+      "main": [[{ "node": "Claude Structured Extraction", "type": "main", "index": 0 }]]
+    },
+    "Claude Structured Extraction": {
+      "main": [[{ "node": "Check Human Escalation", "type": "main", "index": 0 }]]
+    },
+    "Check Human Escalation": {
+      "main": [
+        [{ "node": "Airtable Write: Escalated", "type": "main", "index": 0 }],
+        [{ "node": "Airtable Write: Qualified", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}
