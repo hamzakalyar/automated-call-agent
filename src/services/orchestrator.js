@@ -273,7 +273,7 @@ export async function processInboundLead(inputPayload) {
       const jobCategory = leadRecord.JobType || leadRecord.job_type || extracted.job_type || 'General Plumbing';
       const jobLocation = leadRecord.Location || leadRecord.location || extracted.location || '';
       
-      const bestTech = airtableService.db.findBestAvailableTechnician(jobCategory, jobLocation);
+      const bestTech = airtableService.db.findBestAvailableTechnician(jobCategory, jobLocation, bookedSlot);
       if (bestTech) {
         airtableService.db.assignLeadToTechnician(leadRecord.id, bestTech.name);
         assignedTech = bestTech;

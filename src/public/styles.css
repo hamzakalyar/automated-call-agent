@@ -5308,3 +5308,13 @@ pre#modalJsonContent {
   font-weight: 600;
   cursor: pointer;
 }
+
+/* Schedule Collision Alert in Admin Table */
+.tech-collision-dropdown {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+  color: #991b1b !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+}
+

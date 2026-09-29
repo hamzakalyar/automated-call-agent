@@ -582,8 +582,22 @@ function renderLeadsTable() {
   tbody.innerHTML = filtered.map((l) => {
     const isEscalatedStatus = l.status === 'Escalated to Human' || l.status === 'Escalated';
     const isEmergencyUrgency = l.urgency === 'Emergency';
-    const rowClass = isEscalatedStatus || isEmergencyUrgency ? 'table-row-attention' : '';
     const sourceIcon = l.source === 'ai_voice' ? '🎙️ Voice AI' : l.source === 'ai_chat' ? '💬 Web Chat' : '📝 Manual';
+
+    // Check for double-booking collision (same tech, same booked slot on active leads)
+    const isDoubleBooked = !!(l.assignedTech && l.bookedSlot && l.status !== 'Closed' && leadsCache.some((other) => {
+      if (other.id === l.id || other.leadId === l.leadId) return false;
+      if (other.status === 'Closed') return false;
+      const sameTech = (other.assignedTech || '').trim() && (other.assignedTech || '').trim().toLowerCase() === (l.assignedTech || '').trim().toLowerCase();
+      const sameSlot = (other.bookedSlot || '').trim() && (other.bookedSlot || '').trim() === (l.bookedSlot || '').trim();
+      return sameTech && sameSlot;
+    }));
+
+    // Check for out-of-service-area location
+    const locLower = (l.location || '').toLowerCase();
+    const isOutOfArea = locLower.includes('pakistan') || locLower.includes('islamabad') || locLower.includes('lahore') || locLower.includes('karachi') || locLower.includes('dublin') || locLower.includes('london');
+
+    const rowClass = isDoubleBooked ? 'table-row-attention' : (isEscalatedStatus || isEmergencyUrgency ? 'table-row-attention' : '');
 
     return `
       <tr class="${rowClass}">
@@ -613,6 +627,7 @@ function renderLeadsTable() {
               : `<span style="color: #b45309; font-style: italic; font-size: 0.72rem;">⚠️ Address Missing</span>`
             }
           </div>
+          ${isOutOfArea ? `<div class="badge badge-warning-subtle" style="font-size: 0.68rem; margin-top: 3px; color: #b45309; background: #fef3c7; border: 1px solid #fde68a; display: inline-flex; align-items: center; gap: 3px;" title="Customer location is outside Springfield 25-mile local service territory">⚠️ Out of Service Area</div>` : ''}
         </td>
         <td>
           <div style="font-weight: 600; font-size: 0.82rem;">${escapeHtml(l.jobType || l.job_type || 'General')}</div>
@@ -636,13 +651,15 @@ function renderLeadsTable() {
           <span style="font-size: 0.78rem; font-weight: 500;">
             ${l.bookedSlot ? escapeHtml(formatSlot(l.bookedSlot)) : '<span style="color: #94a3b8; font-style: italic;">Not scheduled</span>'}
           </span>
+          ${isDoubleBooked ? `<div style="font-size: 0.68rem; color: #dc2626; font-weight: 700; margin-top: 2px;">⚠️ Conflict: Double-Booked</div>` : ''}
           ${isEscalatedStatus && !l.bookedSlot ? '<span style="font-size: 0.7rem; color: #b45309; display: block; font-weight: 600;">(Needs Callback)</span>' : ''}
         </td>
         <td>
-          <select class="tech-select-dropdown" onchange="handleAdminAssignTech('${l.leadId}', this.value)">
+          <select class="tech-select-dropdown ${isDoubleBooked ? 'tech-collision-dropdown' : ''}" onchange="handleAdminAssignTech('${l.leadId}', this.value)">
             <option value="">-- Unassigned --</option>
             ${(demoUsers.staff || []).map(s => `<option value="${escapeHtml(s.name)}" ${(l.assignedTech || '').includes(s.name) ? 'selected' : ''}>${escapeHtml(s.name)}</option>`).join('')}
           </select>
+          ${isDoubleBooked ? `<div class="badge badge-danger-subtle" style="font-size: 0.68rem; margin-top: 3px; color: #dc2626; background: #fee2e2; border: 1px solid #fca5a5; display: inline-flex; align-items: center; gap: 3px;" title="Technician is scheduled for multiple active jobs at the exact same hour">⚠️ Schedule Collision</div>` : ''}
         </td>
         <td>
           <div style="font-size: 0.76rem; max-width: 220px; color: #475569;">

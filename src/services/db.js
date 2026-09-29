@@ -1346,7 +1346,7 @@ class CustomCrmDatabase {
      TECHNICIAN & DISPATCH HELPERS
      ============================================================================ */
 
-  findBestAvailableTechnician(trade = 'Plumbing', location = '') {
+  findBestAvailableTechnician(trade = 'Plumbing', location = '', slot = '') {
     const rawTrade = (trade || '').toLowerCase();
 
     // Map trade/issue keywords to technician database specialties
@@ -1359,7 +1359,31 @@ class CustomCrmDatabase {
       matchedTradePattern = '%Elect%';
     }
 
-    // Proximity / Nearby Check: Check if a field technician is already dispatched or active near the service location
+    // Schedule Conflict Prevention: Detect technicians already booked for this exact slot
+    const slotClean = (slot || '').trim();
+    let busyTechNames = [];
+    if (slotClean) {
+      try {
+        const busyRows = this.db.prepare(`
+          SELECT DISTINCT assigned_tech FROM leads 
+          WHERE status IN ('Booked', 'In Progress', 'Dispatched') 
+            AND assigned_tech != ''
+            AND (booked_slot = ? OR booked_slot LIKE ?)
+        `).all(slotClean, `%${slotClean}%`);
+        busyTechNames = busyRows.map(r => r.assigned_tech).filter(Boolean);
+      } catch (e) {}
+    }
+
+    // Helper to generate SQL NOT IN clause for busy techs
+    const getNotBusyFilter = () => {
+      if (busyTechNames.length === 0) return { clause: '', params: [] };
+      const placeholders = busyTechNames.map(() => '?').join(',');
+      return { clause: `AND name NOT IN (${placeholders})`, params: busyTechNames };
+    };
+
+    const notBusy = getNotBusyFilter();
+
+    // Proximity / Nearby Check: Check if an available technician is near the location and not busy
     const locClean = (location || '').trim();
     if (locClean.length >= 3) {
       const tokens = locClean.split(/[\s,]+/).filter(w => w.length > 3 && !/^\d+$/.test(w) && !['street', 'drive', 'avenue', 'lane', 'road', 'blvd', 'court', 'terrace', 'way'].includes(w.toLowerCase()));
@@ -1372,7 +1396,7 @@ class CustomCrmDatabase {
               AND location LIKE ?
             ORDER BY id DESC LIMIT 1
           `).get(`%${token}%`);
-          if (activeNearby && activeNearby.assigned_tech) {
+          if (activeNearby && activeNearby.assigned_tech && !busyTechNames.includes(activeNearby.assigned_tech)) {
             const nearbyTech = this.db.prepare(`
               SELECT * FROM technicians 
               WHERE name = ? AND status IN ('Available', 'On Job')
@@ -1387,66 +1411,76 @@ class CustomCrmDatabase {
       }
     }
 
-    // 1. Prioritize strictly 'Available' technician in the matching trade specialty
-    let tech = this.db.prepare(`
+    // 1. Prioritize strictly 'Available' technician in matching trade specialty who is NOT booked at this time
+    try {
+      const query1 = `
+        SELECT * FROM technicians 
+        WHERE status = 'Available' AND trade LIKE ? ${notBusy.clause}
+        ORDER BY active_jobs ASC 
+        LIMIT 1
+      `;
+      const tech = this.db.prepare(query1).get(matchedTradePattern, ...notBusy.params);
+      if (tech) {
+        tech.proximityTier = 'Available Specialty Match';
+        return tech;
+      }
+    } catch (e) {}
+
+    // 2. Fall back to any 'Available' technician who is NOT busy at this slot
+    try {
+      const query2 = `
+        SELECT * FROM technicians 
+        WHERE status = 'Available' ${notBusy.clause}
+        ORDER BY (CASE WHEN trade LIKE ? THEN 0 ELSE 1 END), active_jobs ASC 
+        LIMIT 1
+      `;
+      const tech = this.db.prepare(query2).get(...notBusy.params, matchedTradePattern);
+      if (tech) {
+        tech.proximityTier = 'Available Technician (Alternate Trade)';
+        return tech;
+      }
+    } catch (e) {}
+
+    // 3. Fall back to active staff in users table who is not busy
+    try {
+      const notBusyStaff = busyTechNames.length > 0 
+        ? `AND name NOT IN (${busyTechNames.map(() => '?').join(',')})` 
+        : '';
+      const staff = this.db.prepare(`
+        SELECT * FROM users 
+        WHERE role = 'staff' AND active = 1 ${notBusyStaff}
+        ORDER BY id ASC
+        LIMIT 1
+      `).get(...busyTechNames);
+
+      if (staff) {
+        return {
+          id: staff.id,
+          tech_id: `TECH-STAFF-${staff.id}`,
+          name: staff.name,
+          phone: staff.phone,
+          email: staff.email,
+          role: 'Staff Technician',
+          trade: trade || 'Plumbing',
+          status: 'Available',
+          active_jobs: 0,
+          proximityTier: 'Available Staff Technician',
+        };
+      }
+    } catch (e) {}
+
+    // 4. If all techs are strictly booked at this exact slot, return first available matching tech with collision flag
+    let fallbackTech = this.db.prepare(`
       SELECT * FROM technicians 
       WHERE status = 'Available' AND trade LIKE ?
-      ORDER BY active_jobs ASC 
-      LIMIT 1
+      ORDER BY active_jobs ASC LIMIT 1
     `).get(matchedTradePattern);
 
-    if (tech) {
-      tech.proximityTier = 'Available Specialty Match';
-      return tech;
-    }
-
-    // 2. Fall back to any 'Available' technician with the lowest job load
-    tech = this.db.prepare(`
-      SELECT * FROM technicians 
-      WHERE status = 'Available'
-      ORDER BY (CASE WHEN trade LIKE ? THEN 0 ELSE 1 END), active_jobs ASC 
-      LIMIT 1
-    `).get(matchedTradePattern);
-
-    if (tech) {
-      tech.proximityTier = 'Available Technician (Lowest Load)';
-      return tech;
-    }
-
-    // 3. If none strictly 'Available', assign the nearby active technician in field ('On Job') with lowest active jobs
-    tech = this.db.prepare(`
-      SELECT * FROM technicians 
-      WHERE status = 'On Job'
-      ORDER BY (CASE WHEN trade LIKE ? THEN 0 ELSE 1 END), active_jobs ASC 
-      LIMIT 1
-    `).get(matchedTradePattern);
-
-    if (tech) {
-      tech.proximityTier = 'In-Field Active Technician Dispatch';
-      return tech;
-    }
-
-    // 4. Fall back to active staff in users table
-    const staff = this.db.prepare(`
-      SELECT * FROM users 
-      WHERE role = 'staff' AND active = 1
-      ORDER BY id ASC
-      LIMIT 1
-    `).get();
-
-    if (staff) {
-      return {
-        id: staff.id,
-        tech_id: `TECH-STAFF-${staff.id}`,
-        name: staff.name,
-        phone: staff.phone,
-        email: staff.email,
-        role: 'Staff Technician',
-        trade: trade || 'Plumbing',
-        status: 'Available',
-        active_jobs: 0,
-        proximityTier: 'Active Staff Member',
-      };
+    if (fallbackTech) {
+      fallbackTech.proximityTier = busyTechNames.includes(fallbackTech.name) 
+        ? 'Capacity Warning: Overbooked Window' 
+        : 'Available Specialty Match';
+      return fallbackTech;
     }
 
     return null;

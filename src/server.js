@@ -462,27 +462,8 @@ app.post('/api/public/book', async (req, res) => {
       });
     }
 
-    // Auto-assign certified field technician based on trade keywords
-    const activeStaff = customCrmDb.listUsers({ role: 'staff', activeOnly: true });
-    let assignedTechName = 'Dave Miller';
-    let assignedStaffId = null;
-
-    const lowerJob = (job_type + ' ' + description).toLowerCase();
-    if (lowerJob.includes('ac') || lowerJob.includes('heat pump') || lowerJob.includes('hvac') || lowerJob.includes('cooling') || lowerJob.includes('compressor')) {
-      const carlos = activeStaff.find(s => s.name.includes('Carlos'));
-      if (carlos) { assignedTechName = carlos.name; assignedStaffId = carlos.id; }
-    } else if (lowerJob.includes('drain') || lowerJob.includes('rooter') || lowerJob.includes('sewer') || lowerJob.includes('jetting') || lowerJob.includes('clog')) {
-      const alex = activeStaff.find(s => s.name.includes('Alex'));
-      if (alex) { assignedTechName = alex.name; assignedStaffId = alex.id; }
-    } else if (lowerJob.includes('boiler') || lowerJob.includes('pipe') || lowerJob.includes('leak') || lowerJob.includes('water heater') || lowerJob.includes('plumb') || lowerJob.includes('burst')) {
-      const dave = activeStaff.find(s => s.name.includes('Dave'));
-      if (dave) { assignedTechName = dave.name; assignedStaffId = dave.id; }
-    } else if (activeStaff.length > 0) {
-      assignedTechName = activeStaff[0].name;
-      assignedStaffId = activeStaff[0].id;
-    }
-
     // Determine booked arrival window and urgency
+    const lowerJob = (job_type + ' ' + description).toLowerCase();
     const isEmergency = urgency === 'Emergency' || lowerJob.includes('emergency') || lowerJob.includes('burst');
     let finalSlot = '';
     let arrivalEstimate = '';
@@ -496,6 +477,15 @@ app.post('/api/public/book', async (req, res) => {
     } else {
       finalSlot = 'Next Available Dispatch Window (Today 2:00 PM - 5:00 PM)';
       arrivalEstimate = 'Today between 2:00 PM - 5:00 PM';
+    }
+
+    // Auto-assign certified field technician with schedule collision prevention
+    let assignedTechName = 'Dave Miller';
+    let assignedStaffId = null;
+    const bestTech = customCrmDb.findBestAvailableTechnician(job_type, location, finalSlot);
+    if (bestTech) {
+      assignedTechName = bestTech.name;
+      assignedStaffId = bestTech.id || null;
     }
 
     // Generate readable trade-based lead ID
